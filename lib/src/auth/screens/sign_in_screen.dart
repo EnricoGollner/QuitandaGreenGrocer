@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/auth/screens/sign_up_screen.dart';
+import 'package:quitanda_app/src/base/base_screen.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -94,7 +95,14 @@ class SignInScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(18),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const BaseScreen(),
+                              ),
+                            );
+                          },
                           child: const Text(
                             'Entrar',
                             style: TextStyle(fontSize: 18, color: Colors.white),
@@ -102,6 +110,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                       ),
                       Align(
+                        // Esqueceu a senha?
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {},
