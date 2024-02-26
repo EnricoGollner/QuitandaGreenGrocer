@@ -7,7 +7,9 @@ class Styles {
       colorScheme: ColorScheme.light(
         primary: CustomColors.customSwatchColor,
         onPrimary: Colors.white,
+        onSecondary: Colors.white,
         surface: CustomColors.customSwatchColor,
+        background: Colors.white.withAlpha(190)
       ),
       useMaterial3: true,
     );

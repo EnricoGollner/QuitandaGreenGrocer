@@ -38,15 +38,15 @@ class SignInScreen extends StatelessWidget {
                           TextSpan(
                             text: 'Grocer',
                             style: TextStyle(
-                                color: CustomColors.customContrastColor,
-                                fontWeight: FontWeight.bold),
+                              color: CustomColors.customContrastColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
                     ),
-
-                    //Categorias
                     SizedBox(
+                      //Categorias - AnimatedTextKit
                       height: 40,
                       child: DefaultTextStyle(
                         style: const TextStyle(fontSize: 25),
@@ -68,8 +68,10 @@ class SignInScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 40),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 40,
+                ),
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
@@ -121,10 +123,9 @@ class SignInScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding(
+                      Padding( // Divisor
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Row(
-                          // Divisor
                           children: [
                             Expanded(
                               child: Divider(
