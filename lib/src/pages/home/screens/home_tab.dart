@@ -1,26 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
-import 'package:quitanda_app/src/home/components/category_tile.dart';
+import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
+import 'package:quitanda_app/src/pages/home/components/category_tile.dart';
+import 'package:quitanda_app/src/pages/home/components/item_tile.dart';
 
 class HomeTab extends StatefulWidget {
-  HomeTab({super.key});
+  const HomeTab({super.key});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
-  List<String> categories = [
-    'Frutas',
-    'Grãos',
-    'Legumes',
-    'Verduras',
-    'Temperos',
-    'Cereais',
-  ];
-
   String selectedCategory = 'Frutas';
 
   @override
@@ -94,16 +85,33 @@ class _HomeTabState extends State<HomeTab> {
             child: ListView.separated(
               // Categories
               separatorBuilder: (_, __) => const SizedBox(width: 10),
-              itemCount: categories.length,
+              itemCount: app_data.categories.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return CategoryTile(
-                  categoryName: categories[index],
-                  isSelected: categories[index] == selectedCategory,
+                  categoryName: app_data.categories[index],
+                  isSelected: app_data.categories[index] == selectedCategory,
                   onTap: () {
-                    setState(() => selectedCategory = categories[index]);
+                    setState(
+                        () => selectedCategory = app_data.categories[index]);
                   },
                 );
+              },
+            ),
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 9 / 11.5,
+              ),
+              itemCount: app_data.items.length,
+              itemBuilder: (_, index) { 
+                return ItemTile(item: app_data.items[index]);
               },
             ),
           )

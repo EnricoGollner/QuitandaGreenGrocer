@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:quitanda_app/src/auth/screens/sign_in_screen.dart';
+import 'package:quitanda_app/src/pages/auth/screens/sign_in_screen.dart';
 import 'package:quitanda_app/src/core/theme/styles.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const QuitandaApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class QuitandaApp extends StatelessWidget {
+  const QuitandaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
