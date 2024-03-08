@@ -82,8 +82,7 @@ class _HomeTabState extends State<HomeTab> {
           Container(
             padding: const EdgeInsets.only(left: 25),
             height: 40,
-            child: ListView.separated(
-              // Categories
+            child: ListView.separated( // Categories
               separatorBuilder: (_, __) => const SizedBox(width: 10),
               itemCount: app_data.categories.length,
               scrollDirection: Axis.horizontal,
@@ -92,8 +91,7 @@ class _HomeTabState extends State<HomeTab> {
                   categoryName: app_data.categories[index],
                   isSelected: app_data.categories[index] == selectedCategory,
                   onTap: () {
-                    setState(
-                        () => selectedCategory = app_data.categories[index]);
+                    setState(() => selectedCategory = app_data.categories[index]);
                   },
                 );
               },
