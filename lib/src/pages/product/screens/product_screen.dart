@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
+import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/pages/base/common_widgets/quantity_widget.dart';
-import 'package:quitanda_app/src/services/utils_services.dart';
 
 class ProductScreen extends StatefulWidget {
   final ItemModel item;
@@ -27,7 +27,8 @@ class _ProductScreenState extends State<ProductScreen> {
               Expanded(
                 child: Hero(
                     tag: widget.item.imgUrl,
-                    child: Image.asset(widget.item.imgUrl)),
+                    child: Image.asset(widget.item.imgUrl),
+                  ),
               ),
               Expanded(
                 child: Container(
@@ -61,16 +62,16 @@ class _ProductScreenState extends State<ProductScreen> {
                             ),
                           ),
                           QuantityWidget(
-                            value: carItemQuantity,
+                            quantity: carItemQuantity,
                             unityText: widget.item.unit,
-                            result: (quantity) {
-                              setState(() => carItemQuantity = quantity);
+                            updateQuantity: (newQuantity) {
+                              setState(() => carItemQuantity = newQuantity);
                             },
                           ),
                         ],
                       ),
                       Text(
-                        UtilServices.priceToCurrency(widget.item.price),
+                        Formatters.priceToCurrency(widget.item.price),
                         style: TextStyle(
                           fontSize: 23,
                           fontWeight: FontWeight.bold,

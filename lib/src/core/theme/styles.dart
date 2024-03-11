@@ -4,14 +4,22 @@ import 'package:quitanda_app/src/core/theme/colors.dart';
 class Styles {
   static ThemeData setMaterial3Theme() {
     return ThemeData(
+      useMaterial3: true,
+      appBarTheme: const AppBarTheme(
+        foregroundColor: Colors.white,
+      ),
       colorScheme: ColorScheme.light(
         primary: CustomColors.customSwatchColor,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
         surface: CustomColors.customSwatchColor,
-        background: Colors.white.withAlpha(190)
+        background: Colors.white.withAlpha(190),
       ),
-      useMaterial3: true,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: Colors.white,
+        ),
+      ),
     );
   }
 }

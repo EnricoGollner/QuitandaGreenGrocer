@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
+import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/pages/product/screens/product_screen.dart';
-import 'package:quitanda_app/src/services/utils_services.dart';
 
 class ItemTile extends StatelessWidget {
   final ItemModel item;
@@ -42,7 +42,7 @@ class ItemTile extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        UtilServices.priceToCurrency(item.price),
+                        Formatters.priceToCurrency(item.price),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
