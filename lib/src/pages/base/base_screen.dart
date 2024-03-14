@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/pages/cart/screens/cart_tab.dart';
 import 'package:quitanda_app/src/pages/home/screens/home_tab.dart';
+import 'package:quitanda_app/src/pages/profile/screens/profile_tab.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -30,7 +31,7 @@ class _BaseScreenState extends State<BaseScreen> {
           HomeTab(),
           CartTab(),
           CartTab(),
-          CartTab(),
+          ProfileTab(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

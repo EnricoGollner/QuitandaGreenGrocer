@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
+import 'package:quitanda_app/src/pages/cart/screens/cart_tab.dart';
 import 'package:quitanda_app/src/pages/home/components/category_tile.dart';
 import 'package:quitanda_app/src/pages/home/components/item_tile.dart';
 
@@ -45,7 +46,8 @@ class _HomeTabState extends State<HomeTab> {
               style: TextStyle(fontSize: 12),
             ),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+              },
               icon: Icon(
                 Icons.shopping_cart,
                 color: CustomColors.customSwatchColor,

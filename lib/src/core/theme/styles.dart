@@ -20,6 +20,9 @@ class Styles {
           foregroundColor: Colors.white,
         ),
       ),
+      dialogTheme: const DialogTheme(
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }

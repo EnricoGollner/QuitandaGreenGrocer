@@ -35,8 +35,9 @@ class _CartTabState extends State<CartTab> {
             child: ListView.builder(
               itemCount: app_data.cartItems.length,
               itemBuilder: (_, index) {
-                return CartTile(cartItem: app_data.cartItems[index],
-                removeItem: removeItemFromCart
+                return CartTile(
+                  cartItem: app_data.cartItems[index],
+                  removeItem: _removeItemFromCart
                 );
               },
             ),
@@ -99,10 +100,8 @@ class _CartTabState extends State<CartTab> {
     );
   }
 
-  void removeItemFromCart(CartItemModel cartItem) {
-    setState(
-      () => app_data.cartItems.remove(cartItem)
-    );
+  void _removeItemFromCart(CartItemModel cartItem) {
+    setState(() => app_data.cartItems.remove(cartItem));
   }
   
   Future<bool?> showOrderConfirmation() {

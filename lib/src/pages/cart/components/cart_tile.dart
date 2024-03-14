@@ -23,6 +23,7 @@ class _CartTileState extends State<CartTile> {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -52,7 +53,7 @@ class _CartTileState extends State<CartTile> {
           updateQuantity: (newQuantity) {
             setState(() {
               widget.cartItem.quantity = newQuantity;
-
+              
               if (newQuantity == 0) {
                 widget.removeItem(widget.cartItem);
               }
