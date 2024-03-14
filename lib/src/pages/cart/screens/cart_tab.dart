@@ -2,10 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
+import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/pages/cart/components/cart_tile.dart';
 
-class CartTab extends StatelessWidget {
+class CartTab extends StatefulWidget {
   const CartTab({super.key});
+
+  @override
+  State<CartTab> createState() => _CartTabState();
+}
+
+class _CartTabState extends State<CartTab> {
+  double cartTotalPrice() {
+    double total = 0;
+
+    for (var cartItem in app_data.cartItems) {
+      total += cartItem.totalPrice();
+    }
+
+    return total;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +35,9 @@ class CartTab extends StatelessWidget {
             child: ListView.builder(
               itemCount: app_data.cartItems.length,
               itemBuilder: (_, index) {
-                return CartTile(cartItem: app_data.cartItems[index]);
+                return CartTile(cartItem: app_data.cartItems[index],
+                removeItem: removeItemFromCart
+                );
               },
             ),
           ),
@@ -49,7 +67,7 @@ class CartTab extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    Formatters.priceToCurrency(50.5),
+                    Formatters.priceToCurrency(cartTotalPrice()),
                     style: TextStyle(
                       fontSize: 23,
                       color: CustomColors.customSwatchColor,
@@ -62,7 +80,10 @@ class CartTab extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: CustomColors.customSwatchColor,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        bool? result = await showOrderConfirmation();
+                        debugPrint('Result: $result');
+                      },
                       child: const Text(
                         'Finish Order',
                         style: TextStyle(
@@ -76,5 +97,39 @@ class CartTab extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void removeItemFromCart(CartItemModel cartItem) {
+    setState(
+      () => app_data.cartItems.remove(cartItem)
+    );
+  }
+  
+  Future<bool?> showOrderConfirmation() {
+    return showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: const Text('Confirmation'),
+        content: const Text('Finish order?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('NÃO'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: CustomColors.customSwatchColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('SIM'),
+          ),
+        ],
+      );
+    },);
   }
 }

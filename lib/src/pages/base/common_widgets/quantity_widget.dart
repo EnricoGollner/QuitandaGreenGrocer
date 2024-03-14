@@ -5,12 +5,14 @@ class QuantityWidget extends StatefulWidget {
   final int quantity;
   final String unityText;
   final Function(int quantity) updateQuantity;
+  final bool isRemovable;
 
   const QuantityWidget({
     super.key,
     required this.quantity,
     required this.unityText,
     required this.updateQuantity,
+    this.isRemovable = false,
   });
 
   @override
@@ -37,10 +39,11 @@ class _QuantityWidgetState extends State<QuantityWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _QuantityButton(
-            icon: Icons.remove,
-            color: Colors.grey,
+            icon: !widget.isRemovable || widget.quantity> 1 ? Icons.remove : Icons.delete_forever,
+            color: !widget.isRemovable || widget.quantity> 1 ? Colors.grey : Colors.red,
             onTap: () {
-              if (widget.quantity == 1) return;
+              if (widget.quantity == 1 && !widget.isRemovable) return;
+
               int updatedQuantity = widget.quantity - 1;
               widget.updateQuantity(updatedQuantity);
             },
