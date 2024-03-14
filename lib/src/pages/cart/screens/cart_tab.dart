@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
+import 'package:quitanda_app/src/pages/cart/components/cart_tile.dart';
 
 class CartTab extends StatelessWidget {
   const CartTab({super.key});
@@ -18,8 +19,9 @@ class CartTab extends StatelessWidget {
             child: ListView.builder(
               itemCount: app_data.cartItems.length,
               itemBuilder: (_, index) {
-              return Text(app_data.cartItems[index].item.itemName);
-            },)
+                return CartTile(cartItem: app_data.cartItems[index]);
+              },
+            ),
           ),
 
           Container(

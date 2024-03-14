@@ -34,6 +34,7 @@ class _QuantityWidgetState extends State<QuantityWidget> {
         ],
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           _QuantityButton(
             icon: Icons.remove,
