@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
-import 'package:quitanda_app/src/pages/cart/screens/cart_tab.dart';
 import 'package:quitanda_app/src/pages/home/components/category_tile.dart';
 import 'package:quitanda_app/src/pages/home/components/item_tile.dart';
 

@@ -1,5 +1,6 @@
 import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
+import 'package:quitanda_app/src/models/order_model.dart';
 import 'package:quitanda_app/src/models/user_model.dart';
 
 ItemModel apple = ItemModel(
@@ -81,4 +82,45 @@ List<CartItemModel> cartItems = [
   CartItemModel(item: guava, quantity: 3),
 ];
 
-UserModel users = UserModel(name: 'Craig', email: 'craig@apple.com', phone: '99 9 9999-9999', cpf: '999.999.999-99', password: '');
+UserModel users = UserModel(
+    name: 'Craig',
+    email: 'craig@apple.com',
+    phone: '99 9 9999-9999',
+    cpf: '999.999.999-99',
+    password: '');
+
+List<OrderModel> orders = [
+  OrderModel(
+    id: 'asd6a54da6s2d1',
+    createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
+    overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
+    items: [
+      CartItemModel(
+        item: apple,
+        quantity: 2,
+      ),
+      CartItemModel(
+        item: guava,
+        quantity: 3,
+      ),
+    ],
+    status: 'pending_payment',
+    copyAndPaste: 'q1w2e3r4t5y6',
+    total: 11.0,
+  ),
+
+  OrderModel(
+    id: 'bsd77a54da6s2d2',
+    createdDateTime: DateTime.parse('2021-06-08 10:00:10.458'),
+    overdueDateTime: DateTime.parse('2021-06-08 11:00:10.458'),
+    items: [
+      CartItemModel(
+        item: apple,
+        quantity: 2,
+      ),
+    ],
+    status: 'pending_payment',
+    copyAndPaste: 'q1w2e3r4t5y6',
+    total: 11.0,
+  ),
+];
