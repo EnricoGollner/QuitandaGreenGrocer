@@ -1,4 +1,4 @@
-import 'package:intl/date_symbol_data_file.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class Formatters {
@@ -9,7 +9,7 @@ class Formatters {
   }
 
   static String dateToDateTime(DateTime date) {
-    initializeDateFormatting('pt_BR', DateFormat.YEAR_MONTH_DAY);
+    initializeDateFormatting();
     
     final DateFormat dateFormat = DateFormat.yMd('pt_BR').add_Hm();
     return dateFormat.format(date);

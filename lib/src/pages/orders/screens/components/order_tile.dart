@@ -12,12 +12,14 @@ class OrderTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
       ),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
+          initiallyExpanded: order.status == 'pending_payment',
           title: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -33,18 +35,20 @@ class OrderTile extends StatelessWidget {
           ),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           children: [
-            SizedBox(
-              height: 150,
+            IntrinsicHeight(
               child: Row(
                 children: [
                   Expanded(
                     flex: 3,
-                    child: ListView.builder(
-                      itemCount: order.items.length,
-                      itemBuilder: (context, index) {
-                        final CartItemModel orderItem = order.items[index];
-                        return _OrderItemWidget(orderItem: orderItem);
-                      },
+                    child: SizedBox(
+                      height: 150,
+                      child: ListView.builder(
+                        itemCount: order.items.length,
+                        itemBuilder: (context, index) {
+                          final CartItemModel orderItem = order.items[index];
+                          return _OrderItemWidget(orderItem: orderItem);
+                        },
+                      ),
                     ),
                   ),
                   VerticalDivider(
