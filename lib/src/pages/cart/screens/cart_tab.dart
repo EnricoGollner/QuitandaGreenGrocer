@@ -3,6 +3,7 @@ import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
 import 'package:quitanda_app/src/models/cart_item_model.dart';
+import 'package:quitanda_app/src/pages/base/common_widgets/payment_dialog.dart';
 import 'package:quitanda_app/src/pages/cart/components/cart_tile.dart';
 
 class CartTab extends StatefulWidget {
@@ -36,13 +37,11 @@ class _CartTabState extends State<CartTab> {
               itemCount: app_data.cartItems.length,
               itemBuilder: (_, index) {
                 return CartTile(
-                  cartItem: app_data.cartItems[index],
-                  removeItem: _removeItemFromCart
-                );
+                    cartItem: app_data.cartItems[index],
+                    removeItem: _removeItemFromCart);
               },
             ),
           ),
-
           Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -82,8 +81,18 @@ class _CartTabState extends State<CartTab> {
                         backgroundColor: CustomColors.customSwatchColor,
                       ),
                       onPressed: () async {
-                        bool? result = await showOrderConfirmation();
-                        debugPrint('Result: $result');
+                        _showOrderConfirmation().then((result) {
+                            if (result ?? false) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return PaymentDialog(
+                                    order: app_data.orders.first,
+                                  );
+                                },
+                              );
+                            }
+                        });
                       },
                       child: const Text(
                         'Finish Order',
@@ -103,32 +112,35 @@ class _CartTabState extends State<CartTab> {
   void _removeItemFromCart(CartItemModel cartItem) {
     setState(() => app_data.cartItems.remove(cartItem));
   }
-  
-  Future<bool?> showOrderConfirmation() {
-    return showDialog(context: context, builder: (context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: const Text('Confirmation'),
-        content: const Text('Finish order?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('NÃO'),
+
+  Future<bool?> _showOrderConfirmation() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: CustomColors.customSwatchColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
+          title: const Text('Confirmation'),
+          content: const Text('Finish order?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('NÃO'),
             ),
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('SIM'),
-          ),
-        ],
-      );
-    },);
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CustomColors.customSwatchColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('SIM'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

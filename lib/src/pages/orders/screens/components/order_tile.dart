@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/models/order_model.dart';
+import 'package:quitanda_app/src/pages/base/common_widgets/payment_dialog.dart';
 import 'package:quitanda_app/src/pages/orders/screens/components/order_status_widget.dart';
 
 class OrderTile extends StatelessWidget {
@@ -34,6 +35,7 @@ class OrderTile extends StatelessWidget {
             ],
           ),
           childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             IntrinsicHeight(
               child: Row(
@@ -64,6 +66,32 @@ class OrderTile extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Text.rich(
+              style: const TextStyle(
+                fontSize: 20,
+              ),
+              TextSpan(
+                children: [
+                  const TextSpan(
+                    text: 'Total ',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: Formatters.priceToCurrency(order.total))
+                ],
+              ),
+            ),
+            Visibility(
+              visible: order.status == 'pending_payment',
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  showDialog(context: context, builder: (context){
+                    return PaymentDialog(order: order);
+                  });
+                },
+                icon: const Icon(Icons.pix),
+                label: const Text('Pix QR Code'),
               ),
             ),
           ],
