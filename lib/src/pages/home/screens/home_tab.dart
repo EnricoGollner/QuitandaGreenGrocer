@@ -2,6 +2,8 @@ import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
+import 'package:quitanda_app/src/pages/base/common_widgets/custom_shimmer.dart';
+import 'package:quitanda_app/src/pages/home/components/app_name_widget.dart';
 import 'package:quitanda_app/src/pages/home/components/category_tile.dart';
 import 'package:quitanda_app/src/pages/home/components/item_tile.dart';
 
@@ -22,6 +24,8 @@ class _HomeTabState extends State<HomeTab> {
     runAddToCardAnimation(gkImage);
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,21 +44,7 @@ class _HomeTabState extends State<HomeTab> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
-              title: Text.rich(
-                TextSpan(
-                  style: const TextStyle(fontSize: 30),
-                  children: [
-                    TextSpan(
-                      text: 'Green',
-                      style: TextStyle(color: CustomColors.customSwatchColor),
-                    ),
-                    TextSpan(
-                      text: 'Grocer',
-                      style: TextStyle(color: CustomColors.customContrastColor),
-                    ),
-                  ],
-                ),
-              ),
+              title: const AppNameWidget(),
               actions: [
                 Badge(
                   backgroundColor: CustomColors.customContrastColor,
@@ -114,29 +104,48 @@ class _HomeTabState extends State<HomeTab> {
                     categoryName: app_data.categories[index],
                     isSelected: app_data.categories[index] == selectedCategory,
                     onTap: () {
-                      setState(() => selectedCategory = app_data.categories[index]);
+                      setState(
+                          () => selectedCategory = app_data.categories[index]);
                     },
                   );
                 },
               ),
             ),
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 9 / 11.5,
-                ),
-                itemCount: app_data.items.length,
-                itemBuilder: (_, index) {
-                  return ItemTile(
-                      item: app_data.items[index],
-                      cartAnimationMethod: itemSelectedCartAnimations);
-                },
-              ),
+              child: !isLoading
+                  ? GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 9 / 11.5,
+                      ),
+                      itemCount: app_data.items.length,
+                      itemBuilder: (_, index) {
+                        return ItemTile(
+                            item: app_data.items[index],
+                            cartAnimationMethod: itemSelectedCartAnimations);
+                      },
+                    )
+                  : GridView.count(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      physics: const BouncingScrollPhysics(),
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 9 / 11.5,
+                      children: List.generate(
+                        10,
+                        (index) => CustomShimmer(
+                          height: double.infinity,
+                          width: double.infinity,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    ),
             )
           ],
         ),

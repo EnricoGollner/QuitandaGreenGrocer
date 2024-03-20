@@ -4,6 +4,7 @@ import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/pages/auth/screens/sign_up_screen.dart';
 import 'package:quitanda_app/src/pages/base/base_screen.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
+import 'package:quitanda_app/src/pages/home/components/app_name_widget.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -25,25 +26,9 @@ class SignInScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     //Nome do App
-                    Text.rich(
-                      TextSpan(
-                        style: const TextStyle(fontSize: 40),
-                        children: [
-                          const TextSpan(
-                            text: 'Green',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          TextSpan(
-                            text: 'Grocer',
-                            style: TextStyle(
-                              color: CustomColors.customContrastColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
+                    const AppNameWidget(
+                      greenTitleColor: Colors.white,
+                      textSize: 40,
                     ),
                     SizedBox(
                       //Categorias - AnimatedTextKit
@@ -123,7 +108,8 @@ class SignInScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Padding( // Divisor
+                      Padding(
+                        // Divisor
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Row(
                           children: [
