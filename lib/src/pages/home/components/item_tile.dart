@@ -1,3 +1,4 @@
+import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
@@ -6,8 +7,14 @@ import 'package:quitanda_app/src/pages/product/screens/product_screen.dart';
 
 class ItemTile extends StatelessWidget {
   final ItemModel item;
-  
-  const ItemTile({super.key, required this.item});
+  final Function(GlobalKey<State<StatefulWidget>> gkImage) cartAnimationMethod;
+  final GlobalKey<CartIconKey> imageGk = GlobalKey();
+
+  ItemTile({
+    super.key,
+    required this.item,
+    required this.cartAnimationMethod,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +37,13 @@ class ItemTile extends StatelessWidget {
                   Expanded(
                     child: Hero(
                       tag: item.imgUrl,
-                      child: Image.asset(item.imgUrl)),
+                      child: Container(
+                        key: imageGk,
+                        child: Image.asset(
+                          item.imgUrl,
+                        ),
+                      ),
+                    ),
                   ),
                   Text(
                     item.itemName,
@@ -64,12 +77,11 @@ class ItemTile extends StatelessWidget {
             ),
           ),
         ),
-
         Positioned(
           top: 4,
           right: 4,
           child: InkWell(
-            onTap: () {},
+            onTap: () => cartAnimationMethod(imageGk),
             child: Container(
               decoration: BoxDecoration(
                 color: CustomColors.customSwatchColor,
