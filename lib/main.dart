@@ -13,7 +13,7 @@ class QuitandaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Quitanda App',
+      title: 'GreenGrocer',
       theme: Styles.setMaterial3Theme(),
       home: const SignInScreen(),
     );

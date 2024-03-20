@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
+import 'package:quitanda_app/src/core/utils/toast_util.dart';
 import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/pages/base/common_widgets/payment_dialog.dart';
 import 'package:quitanda_app/src/pages/cart/components/cart_tile.dart';
@@ -37,8 +38,9 @@ class _CartTabState extends State<CartTab> {
               itemCount: app_data.cartItems.length,
               itemBuilder: (_, index) {
                 return CartTile(
-                    cartItem: app_data.cartItems[index],
-                    removeItem: _removeItemFromCart);
+                  cartItem: app_data.cartItems[index],
+                  removeItem: _removeItemFromCart,
+                );
               },
             ),
           ),
@@ -82,16 +84,18 @@ class _CartTabState extends State<CartTab> {
                       ),
                       onPressed: () async {
                         _showOrderConfirmation().then((result) {
-                            if (result ?? false) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return PaymentDialog(
-                                    order: app_data.orders.first,
-                                  );
-                                },
-                              );
-                            }
+                          if (result ?? false) {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return PaymentDialog(
+                                  order: app_data.orders.first,
+                                );
+                              },
+                            );
+                          } else {
+                            FlutterToastUtil.show(message: 'Order not confirmed!', isError: true);
+                          }
                         });
                       },
                       child: const Text(
@@ -111,6 +115,8 @@ class _CartTabState extends State<CartTab> {
 
   void _removeItemFromCart(CartItemModel cartItem) {
     setState(() => app_data.cartItems.remove(cartItem));
+
+    FlutterToastUtil.show(message: '${cartItem.item.itemName} removed from cart!');
   }
 
   Future<bool?> _showOrderConfirmation() {
@@ -126,7 +132,7 @@ class _CartTabState extends State<CartTab> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('NÃO'),
+              child: const Text('CANCEL'),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -136,7 +142,7 @@ class _CartTabState extends State<CartTab> {
                 ),
               ),
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('SIM'),
+              child: const Text('CONFIRM'),
             ),
           ],
         );

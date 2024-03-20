@@ -114,8 +114,7 @@ class _HomeTabState extends State<HomeTab> {
                     categoryName: app_data.categories[index],
                     isSelected: app_data.categories[index] == selectedCategory,
                     onTap: () {
-                      setState(
-                          () => selectedCategory = app_data.categories[index]);
+                      setState(() => selectedCategory = app_data.categories[index]);
                     },
                   );
                 },

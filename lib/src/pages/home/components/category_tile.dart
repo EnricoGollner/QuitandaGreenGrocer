@@ -18,21 +18,20 @@ class CategoryTile extends StatelessWidget {
     return Align(
       alignment: Alignment.center,
       child: InkWell(
+        borderRadius: BorderRadius.circular(30),
         onTap: onTap,
         child: Ink(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: isSelected ? CustomColors.customSwatchColor : Colors.transparent,
-            ),
-            child: Text(
-              categoryName,
-              style: TextStyle(
-                color: isSelected ? Colors.white : CustomColors.customContrastColor,
-                fontWeight: FontWeight.bold,
-                fontSize: isSelected ? 16 : 14,
-              ),
+          padding: const EdgeInsets.symmetric(horizontal: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: isSelected ? CustomColors.customSwatchColor : Colors.transparent,
+          ),
+          child: Text(
+            categoryName,
+            style: TextStyle(
+              color: isSelected ? Colors.white : CustomColors.customContrastColor,
+              fontWeight: FontWeight.bold,
+              fontSize: isSelected ? 16 : 14,
             ),
           ),
         ),

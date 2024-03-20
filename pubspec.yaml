@@ -26,12 +26,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^3.0.0
 
-flutter:
+  flutter_launcher_icons: ^0.13.1  # Plugin utilizado somente no desenvolvimento
 
+flutter:
   uses-material-design: true
 
   assets:
     - assets/fruits/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"
+  remove_alpha_ios: true
