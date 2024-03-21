@@ -24,6 +24,9 @@ dependencies:
   shimmer: ^3.0.0
   get: ^4.6.6
   dio: ^5.4.1
+  json_annotation: ^4.8.1
+  freezed: ^2.4.7
+  freezed_annotation: ^2.4.1
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +34,8 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
   flutter_launcher_icons: ^0.13.1  # Plugin utilizado somente no desenvolvimento
+  json_serializable: ^6.7.1
+  build_runner: ^2.4.8
 
 flutter:
   uses-material-design: true

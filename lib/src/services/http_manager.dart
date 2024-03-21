@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-abstract class HttpMethods {
+abstract class HTTPMethods {
   static const String get = 'GET';
   static const String post = 'POST';
   static const String put = 'PUT';

@@ -99,7 +99,6 @@ class SignInScreen extends StatelessWidget {
                               onPressed: authController.isLoading.value ? null : () async {
                                 if (_formKey.currentState!.validate()) {
                                   await authController.signIn(email: _emailController.text, password: _passwordController.text);
-                                  Get.offNamed(PagesRoutes.base);
                                 }
                               },
                               child: authController.isLoading.value ? const CircularProgressIndicator(color: Colors.white) : const Text(
