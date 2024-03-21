@@ -24,7 +24,15 @@ class _HomeTabState extends State<HomeTab> {
     runAddToCardAnimation(gkImage);
   }
 
-  bool isLoading = false;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() => isLoading = false);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,11 +99,10 @@ class _HomeTabState extends State<HomeTab> {
                 ),
               ),
             ),
-            Container(
+            Container( // Categories
               padding: const EdgeInsets.only(left: 25),
               height: 40,
-              child: ListView.separated(
-                // Categories
+              child: !isLoading ? ListView.separated(
                 separatorBuilder: (_, __) => const SizedBox(width: 10),
                 itemCount: app_data.categories.length,
                 scrollDirection: Axis.horizontal,
@@ -109,7 +116,21 @@ class _HomeTabState extends State<HomeTab> {
                     },
                   );
                 },
-              ),
+              ) : ListView.separated(
+                separatorBuilder: (_, __) => const SizedBox(width: 10),
+                itemCount: 5,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return Align(
+                    alignment: Alignment.center,
+                    child: CustomShimmer(
+                      height: 22,
+                      width: 80,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  );
+                },
+              )
             ),
             Expanded(
               child: !isLoading
