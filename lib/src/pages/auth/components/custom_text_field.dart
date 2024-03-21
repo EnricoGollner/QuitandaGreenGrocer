@@ -3,15 +3,18 @@ import 'package:flutter/services.dart';
 
 class CustomTextField extends StatefulWidget {
   final String? initialValue;
+  final TextEditingController? controller;
   final IconData icon;
   final String labelText;
   final bool isSecret;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool isReadOnly;
+  final String? Function(String?)? validator;
 
   const CustomTextField({
     super.key,
+    this.controller,
     this.initialValue,
     required this.icon,
     required this.labelText,
@@ -19,6 +22,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType,
     this.inputFormatters,
     this.isReadOnly = false,
+    this.validator,
   });
   
 
@@ -40,10 +44,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextFormField(
+        onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+        controller: widget.controller,
         readOnly: widget.isReadOnly,
         initialValue: widget.initialValue,
-        onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
         obscureText: _isVisible,
+        validator: widget.validator,
         decoration: InputDecoration(
           isDense: true,
           prefixIcon: Icon(widget.icon),

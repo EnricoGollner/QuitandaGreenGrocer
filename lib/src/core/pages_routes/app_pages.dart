@@ -7,7 +7,7 @@ import 'package:quitanda_app/src/pages/base/base_screen.dart';
 abstract class AppPages {
   static final pages = <GetPage>[
     GetPage(name: PagesRoutes.splashScreen, page: () => const SplashScreen()),
-    GetPage(name:PagesRoutes.signIn, page: () => const SignInScreen()),
+    GetPage(name:PagesRoutes.signIn, page: () => SignInScreen()),
     GetPage(name: PagesRoutes.signUp, page: () => SignUpScreen()),
     GetPage(name: PagesRoutes.base, page: () => const BaseScreen()),
   ];

@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/pages_routes/app_pages.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
-import 'package:quitanda_app/src/pages/auth/screens/sign_up_screen.dart';
-import 'package:quitanda_app/src/pages/base/base_screen.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
+import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 import 'package:quitanda_app/src/pages/home/components/app_name_widget.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  SignInScreen({super.key});
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,31 +68,64 @@ class SignInScreen extends StatelessWidget {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
                 ),
                 child: Form(
+                  key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const CustomTextField(
+                      CustomTextField(
+                        controller: _emailController,
                         icon: Icons.email,
                         labelText: 'E-mail',
+                        validator: (email) {
+                          if (email == null || email.isEmpty) {
+                            return 'Please enter an email!';
+                          }
+
+                          if (!email.isEmail) {
+                            return 'Please enter a valid email!';
+                          }
+
+                          return null;
+                        },
                       ),
-                      const CustomTextField(
+                      CustomTextField(
+                        controller: _passwordController,
                         icon: Icons.lock,
                         labelText: 'Password',
                         isSecret: true,
+                        validator: (password) {
+                          if (password == null || password.isEmpty) {
+                            return 'Please enter a password!';
+                          }
+                          if (password.length < 7) {
+                            return 'Password must be at least 7 characters!';
+                          }
+
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 50,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                          ),
-                          onPressed: () => Get.offNamed(PagesRoutes.base),
-                          child: const Text(
-                            'Login',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
+                        child: GetX<AuthController>(
+                          builder: (authController) {
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                              ),
+                              onPressed: authController.isLoading.value ? null : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await authController.signIn(email: _emailController.text, password: _passwordController.text);
+                                  Get.offNamed(PagesRoutes.base);
+                                }
+                              },
+                              child: authController.isLoading.value ? const CircularProgressIndicator(color: Colors.white) : const Text(
+                                'Login',
+                                style: TextStyle(fontSize: 18, color: Colors.white),
+                              ),
+                            );
+                          },
                         ),
                       ),
                       Align(
@@ -97,7 +134,8 @@ class SignInScreen extends StatelessWidget {
                           onPressed: () {},
                           child: Text(
                             'Forgot Password?',
-                            style: TextStyle(color: CustomColors.customContrastColor),
+                            style: TextStyle(
+                                color: CustomColors.customContrastColor),
                           ),
                         ),
                       ),
@@ -114,7 +152,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 15),
-                              child: Text('OU'),
+                              child: Text('OR'),
                             ),
                             Expanded(
                               child: Divider(

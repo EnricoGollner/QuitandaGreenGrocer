@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/pages_routes/app_pages.dart';
 import 'package:quitanda_app/src/core/theme/styles.dart';
+import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
 void main() {
+  Get.lazyPut<AuthController>(() => AuthController());
+  
   runApp(const QuitandaApp());
 }
 
