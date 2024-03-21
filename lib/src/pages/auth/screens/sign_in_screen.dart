@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/pages_routes/app_pages.dart';
+import 'package:quitanda_app/src/core/utils/validators.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
@@ -76,33 +77,14 @@ class SignInScreen extends StatelessWidget {
                         controller: _emailController,
                         icon: Icons.email,
                         labelText: 'E-mail',
-                        validator: (email) {
-                          if (email == null || email.isEmpty) {
-                            return 'Please enter an email!';
-                          }
-
-                          if (!email.isEmail) {
-                            return 'Please enter a valid email!';
-                          }
-
-                          return null;
-                        },
+                        validator: Validators.isEmail
                       ),
                       CustomTextField(
                         controller: _passwordController,
                         icon: Icons.lock,
                         labelText: 'Password',
                         isSecret: true,
-                        validator: (password) {
-                          if (password == null || password.isEmpty) {
-                            return 'Please enter a password!';
-                          }
-                          if (password.length < 7) {
-                            return 'Password must be at least 7 characters!';
-                          }
-
-                          return null;
-                        },
+                        validator: Validators.isPasswordGreaterThan7Char,
                       ),
                       SizedBox(
                         height: 50,
