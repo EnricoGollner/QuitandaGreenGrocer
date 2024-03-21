@@ -6,8 +6,7 @@ import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  Get.put<AuthController>(AuthController());
+  Get.lazyPut<AuthController>(() => AuthController());
   
   runApp(const QuitandaApp());
 }

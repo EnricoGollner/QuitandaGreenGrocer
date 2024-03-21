@@ -14,12 +14,6 @@ class AuthController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
   final LocalDataRepository _localDataRepository = LocalDataRepository();
 
-  @override
-  void onInit() async {
-    await validateToken();
-    super.onInit();
-  }
-
   Future<void> saveTokenAndProceedToBase() async {
     await _localDataRepository.saveLocalData(key: StorageKeys.token, value: user.token!);
     Get.offAllNamed(PagesRoutes.base);
