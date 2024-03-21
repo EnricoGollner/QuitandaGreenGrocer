@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:quitanda_app/src/core/pages_routes/app_pages.dart';
 import 'package:quitanda_app/src/core/theme/styles.dart';
-import 'package:quitanda_app/src/pages/auth/screens/splash_screen.dart';
 
 void main() {
   runApp(const QuitandaApp());
@@ -11,13 +12,12 @@ class QuitandaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GreenGrocer',
       theme: Styles.setMaterial3Theme(),
-      home: const SplashScreen(),
+      initialRoute: PagesRoutes.splashScreen,
+      getPages: AppPages.pages, // Onde definimos as GetPages com Name e widget
     );
   }
 }
-
-

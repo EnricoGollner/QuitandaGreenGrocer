@@ -73,12 +73,12 @@ class SignUpScreen extends StatelessWidget {
                           ),
                           const CustomTextField(
                             icon: Icons.lock,
-                            labelText: 'Senha',
+                            labelText: 'Password',
                             isSecret: true,
                           ),
                           const CustomTextField(
                             icon: Icons.person,
-                            labelText: 'Nome',
+                            labelText: 'Name',
                           ),
                           CustomTextField(
                             icon: Icons.phone,

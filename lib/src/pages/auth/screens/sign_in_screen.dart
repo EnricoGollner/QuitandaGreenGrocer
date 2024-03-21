@@ -1,5 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:quitanda_app/src/core/pages_routes/app_pages.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/pages/auth/screens/sign_up_screen.dart';
 import 'package:quitanda_app/src/pages/base/base_screen.dart';
@@ -25,7 +27,7 @@ class SignInScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //Nome do App
+                    //Name do App
                     const AppNameWidget(
                       greenTitleColor: Colors.white,
                       textSize: 40,
@@ -39,12 +41,12 @@ class SignInScreen extends StatelessWidget {
                           pause: Duration.zero,
                           repeatForever: true,
                           animatedTexts: [
-                            FadeAnimatedText('Frutas'),
-                            FadeAnimatedText('Verduras'),
-                            FadeAnimatedText('Legumes'),
-                            FadeAnimatedText('Carnes'),
-                            FadeAnimatedText('Cereais'),
-                            FadeAnimatedText('Lacticíneos'),
+                            FadeAnimatedText('Fruits'),
+                            FadeAnimatedText('Greens'),
+                            FadeAnimatedText('Vegetables'),
+                            FadeAnimatedText('Meat'),
+                            FadeAnimatedText('Cereals'),
+                            FadeAnimatedText('Dairy'),
                           ],
                         ),
                       ),
@@ -71,7 +73,7 @@ class SignInScreen extends StatelessWidget {
                       ),
                       const CustomTextField(
                         icon: Icons.lock,
-                        labelText: 'Senha',
+                        labelText: 'Password',
                         isSecret: true,
                       ),
                       SizedBox(
@@ -82,29 +84,20 @@ class SignInScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(18),
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const BaseScreen(),
-                              ),
-                            );
-                          },
+                          onPressed: () => Get.offNamed(PagesRoutes.base),
                           child: const Text(
-                            'Entrar',
+                            'Login',
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),
                       Align(
-                        // Esqueceu a senha?
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: () {},
                           child: Text(
-                            'Esqueceu a senha?',
-                            style: TextStyle(
-                                color: CustomColors.customContrastColor),
+                            'Forgot Password?',
+                            style: TextStyle(color: CustomColors.customContrastColor),
                           ),
                         ),
                       ),
@@ -141,16 +134,9 @@ class SignInScreen extends StatelessWidget {
                               color: Colors.green,
                             ),
                           ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SignUpScreen(),
-                              ),
-                            );
-                          },
+                          onPressed: () => Get.toNamed(PagesRoutes.signUp),
                           child: const Text(
-                            'Criar conta',
+                            'Sign Up',
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
