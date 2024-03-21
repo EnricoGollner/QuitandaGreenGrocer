@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 class CustomTextField extends StatefulWidget {
   final String? initialValue;
   final TextEditingController? controller;
+  final void Function(String? value)? onSaved;
   final IconData icon;
   final String labelText;
   final bool isSecret;
@@ -15,6 +16,7 @@ class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     this.controller,
+    this.onSaved,
     this.initialValue,
     required this.icon,
     required this.labelText,
@@ -46,6 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: TextFormField(
         onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
         controller: widget.controller,
+        onSaved: widget.onSaved,
         readOnly: widget.isReadOnly,
         initialValue: widget.initialValue,
         obscureText: _isVisible,

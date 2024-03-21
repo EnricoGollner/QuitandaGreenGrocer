@@ -48,6 +48,20 @@ class AuthController extends GetxController {
       FlutterToastUtil.show(message: message, isError: true);
     });
   }
+
+  Future<void> signUp() async {
+    isLoading.value = true;
+
+    AuthResult result = await _authRepository.signUp(user: user);
+    isLoading.value = false;
+
+    result.when(success: (user) async {
+      this.user = user;
+      await saveTokenAndProceedToBase();
+    }, error: (message) {
+      FlutterToastUtil.show(message: message, isError: true);
+    });
+  }
   
   Future<void> signOut() async {
     user = UserModel();

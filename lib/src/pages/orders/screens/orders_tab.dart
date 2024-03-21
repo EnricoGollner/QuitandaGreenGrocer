@@ -8,16 +8,17 @@ class OrdersTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Orders'),
-        ),
-        body: ListView.separated(
-          padding: const EdgeInsets.all(16),
-          separatorBuilder: (_, index) => const SizedBox(height: 10),
-          itemCount: app_data.orders.length,
-          itemBuilder: (_, index) {
-            return OrderTile(order: app_data.orders[index]);
-          },
-        ));
+      appBar: AppBar(
+        title: const Text('Orders'),
+      ),
+      body: ListView.separated(
+        padding: const EdgeInsets.all(16),
+        separatorBuilder: (_, index) => const SizedBox(height: 10),
+        itemCount: app_data.orders.length,
+        itemBuilder: (_, index) {
+          return OrderTile(order: app_data.orders[index]);
+        },
+      ),
+    );
   }
 }

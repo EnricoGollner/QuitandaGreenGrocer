@@ -16,14 +16,7 @@ class AuthRepository {
       }
     );
 
-    if (result['result'] != null) {
-      final UserModel user = UserModel.fromJson(result['result']);
-      return AuthResult.success(user);
-    } else {
-      return AuthResult.error(
-        auth_errors.authErrorsString(result['error']),
-      );
-    }
+    return _handleResult(result);
   }
 
   Future<AuthResult> signIn(
@@ -37,6 +30,22 @@ class AuthRepository {
       },
     );
 
+    return _handleResult(result);
+  }
+
+  Future<AuthResult> signUp({
+    required UserModel user
+  }) async {
+    final Map result = await _httpManager.restRequest(
+      url: Endpoints.signUp,
+      method: HTTPMethods.post,
+      body: user.toJson(),
+    );
+
+    return _handleResult(result);
+  }
+
+  AuthResult _handleResult(Map result) {
     if (result['result'] != null) {
       final UserModel user = UserModel.fromJson(result['result']);
       return AuthResult.success(user);

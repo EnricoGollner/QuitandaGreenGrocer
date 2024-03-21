@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
+import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({super.key});
@@ -11,7 +13,10 @@ class ProfileTab extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Profile'),
         actions: [
-          IconButton(icon: const Icon(Icons.logout), onPressed: () {}),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => Get.find<AuthController>().signOut(),
+          ),
         ],
       ),
       body: ListView(
@@ -61,64 +66,68 @@ class ProfileTab extends StatelessWidget {
   }
 
   Future<bool?> _updatePassword(BuildContext context) async {
-    return showDialog(context: context, builder: (context) => Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12),
-                  child: Text(
-                    'Change Password',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const CustomTextField(
-                  icon: Icons.lock,
-                  labelText: 'Current Password',
-                  isSecret: true,
-                ),
-                const CustomTextField(
-                  icon: Icons.lock_outline,
-                  labelText: 'New Password',
-                  isSecret: true,
-                ),
-                const CustomTextField(
-                  icon: Icons.lock_outline,
-                  labelText: 'Confirm New Password',
-                  isSecret: true,
-                ),
-                SizedBox(
-                  height: 45,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
+    return showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Text(
+                      'Change Password',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    onPressed: () {},
-                    child: const Text('Change Password'),
                   ),
-                ),
-              ],
+                  const CustomTextField(
+                    icon: Icons.lock,
+                    labelText: 'Current Password',
+                    isSecret: true,
+                  ),
+                  const CustomTextField(
+                    icon: Icons.lock_outline,
+                    labelText: 'New Password',
+                    isSecret: true,
+                  ),
+                  const CustomTextField(
+                    icon: Icons.lock_outline,
+                    labelText: 'Confirm New Password',
+                    isSecret: true,
+                  ),
+                  SizedBox(
+                    height: 45,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: () {},
+                      child: const Text('Change Password'),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            top: 5,
-            right: 5,
-            child: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.close),
+            Positioned(
+              top: 5,
+              right: 5,
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.close),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),);
+    );
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:quitanda_app/src/core/utils/validators.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
+import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -16,6 +19,9 @@ class SignUpScreen extends StatelessWidget {
     mask: '(###) #####-####',
     filter: {'#': RegExp(r'[0-9]')},
   );
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthController _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -64,38 +70,50 @@ class SignUpScreen extends StatelessWidget {
                           BorderRadius.vertical(top: Radius.circular(40)),
                     ),
                     child: Form(
+                      key: _formKey,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const CustomTextField(
+                          CustomTextField(
                             icon: Icons.email,
+                            keyboardType: TextInputType.emailAddress,
                             labelText: 'E-mail',
+                            validator: Validators.isEmail,
+                            onSaved: (value) {
+                              
+                            },
                           ),
                           const CustomTextField(
                             icon: Icons.lock,
                             labelText: 'Password',
                             isSecret: true,
+                            validator: Validators.isRequired,
                           ),
                           const CustomTextField(
                             icon: Icons.person,
                             labelText: 'Name',
+                            validator: Validators.isFullname,
                           ),
                           CustomTextField(
                             icon: Icons.phone,
                             labelText: 'Celular',
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.phone,
                             inputFormatters: [phoneFormatter],
+                            validator: Validators.isPhone,
                           ),
                           CustomTextField(
                             icon: Icons.file_copy,
                             labelText: 'CPF',
                             keyboardType: TextInputType.number,
                             inputFormatters: [cpfFormatter],
+                            validator: Validators.isCPF,
                           ),
                           SizedBox(
                             height: 50,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {}
+                              },
                               child: const Text(
                                 'Cadastrar Usuário',
                                 style: TextStyle(
