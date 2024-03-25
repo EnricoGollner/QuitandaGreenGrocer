@@ -28,6 +28,7 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   void initState() {
+
     Future.delayed(const Duration(seconds: 2), () {
       setState(() => isLoading = false);
     });
