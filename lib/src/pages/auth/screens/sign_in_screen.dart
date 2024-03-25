@@ -2,10 +2,12 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/pages_routes/app_pages.dart';
+import 'package:quitanda_app/src/core/utils/toast_util.dart';
 import 'package:quitanda_app/src/core/utils/validators.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
+import 'package:quitanda_app/src/pages/auth/screens/components/forget_password_dialog.dart';
 import 'package:quitanda_app/src/pages/home/components/app_name_widget.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -74,11 +76,10 @@ class SignInScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       CustomTextField(
-                        controller: _emailController,
-                        icon: Icons.email,
-                        labelText: 'E-mail',
-                        validator: Validators.isEmail
-                      ),
+                          controller: _emailController,
+                          icon: Icons.email,
+                          labelText: 'E-mail',
+                          validator: Validators.isEmail),
                       CustomTextField(
                         controller: _passwordController,
                         icon: Icons.lock,
@@ -96,15 +97,23 @@ class SignInScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(18),
                                 ),
                               ),
-                              onPressed: authController.isLoading.value ? null : () async {
-                                if (_formKey.currentState!.validate()) {
-                                  await authController.signIn(email: _emailController.text, password: _passwordController.text);
-                                }
-                              },
-                              child: authController.isLoading.value ? const CircularProgressIndicator(color: Colors.white) : const Text(
-                                'Login',
-                                style: TextStyle(fontSize: 18, color: Colors.white),
-                              ),
+                              onPressed: authController.isLoading.value
+                                  ? null
+                                  : () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        await authController.signIn(
+                                            email: _emailController.text,
+                                            password: _passwordController.text);
+                                      }
+                                    },
+                              child: authController.isLoading.value
+                                  ? const CircularProgressIndicator(
+                                      color: Colors.white)
+                                  : const Text(
+                                      'Login',
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.white),
+                                    ),
                             );
                           },
                         ),
@@ -112,7 +121,18 @@ class SignInScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            final bool? result = await showDialog(
+                              context: context,
+                              builder: (context) => ForgotPasswordDialog(
+                                email: _emailController.text,
+                              ),
+                            );
+
+                            if (result ?? false) {
+                              FlutterToastUtil.show(message: 'Um link de recuperação foi enviado para o seu email.');
+                            }
+                          },
                           child: Text(
                             'Forgot Password?',
                             style: TextStyle(

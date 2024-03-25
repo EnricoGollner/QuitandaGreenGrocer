@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:quitanda_app/src/core/utils/validators.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
-import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -21,7 +19,6 @@ class SignUpScreen extends StatelessWidget {
   );
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AuthController _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {

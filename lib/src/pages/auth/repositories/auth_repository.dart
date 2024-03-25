@@ -1,6 +1,7 @@
 import 'package:quitanda_app/src/constants/endpoints.dart';
 import 'package:quitanda_app/src/models/user_model.dart';
-import 'package:quitanda_app/src/pages/auth/repositories/auth_errors.dart'as auth_errors;
+import 'package:quitanda_app/src/pages/auth/repositories/auth_errors.dart'
+    as auth_errors;
 import 'package:quitanda_app/src/pages/auth/result/auth_result.dart';
 import 'package:quitanda_app/src/services/http_manager.dart';
 
@@ -9,12 +10,11 @@ class AuthRepository {
 
   Future<AuthResult> validateToken(String token) async {
     final Map result = await _httpManager.restRequest(
-      url: Endpoints.validateToken,
-      method: HTTPMethods.post,
-      headers: {
-        'X-Parse-Session-Token': token,
-      }
-    );
+        url: Endpoints.validateToken,
+        method: HTTPMethods.post,
+        headers: {
+          'X-Parse-Session-Token': token,
+        });
 
     return _handleResult(result);
   }
@@ -33,9 +33,7 @@ class AuthRepository {
     return _handleResult(result);
   }
 
-  Future<AuthResult> signUp({
-    required UserModel user
-  }) async {
+  Future<AuthResult> signUp({required UserModel user}) async {
     final Map result = await _httpManager.restRequest(
       url: Endpoints.signUp,
       method: HTTPMethods.post,
@@ -43,6 +41,14 @@ class AuthRepository {
     );
 
     return _handleResult(result);
+  }
+
+  Future<void> resetPassword({required String email}) async {
+    await _httpManager.restRequest(
+      url: Endpoints.ressetPassword,
+      method: HTTPMethods.post,
+      body: {'email': email},
+    );
   }
 
   AuthResult _handleResult(Map result) {

@@ -62,6 +62,12 @@ class AuthController extends GetxController {
       FlutterToastUtil.show(message: message, isError: true);
     });
   }
+
+  Future<void> resetPassword(String email) async {
+    isLoading.value = true;
+    await _authRepository.resetPassword(email: email);
+    isLoading.value = false;
+  }
   
   Future<void> signOut() async {
     user = UserModel();
