@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:quitanda_app/src/core/utils/validators.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
+import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -14,11 +16,12 @@ class SignUpScreen extends StatelessWidget {
   );
 
   final TextInputFormatter phoneFormatter = MaskTextInputFormatter(
-    mask: '(###) #####-####',
+    mask: '(##) #####-####',
     filter: {'#': RegExp(r'[0-9]')},
   );
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final AuthController _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -76,27 +79,32 @@ class SignUpScreen extends StatelessWidget {
                             keyboardType: TextInputType.emailAddress,
                             labelText: 'E-mail',
                             validator: Validators.isEmail,
-                            onSaved: (value) {
-                              
-                            },
+                            onSaved: (value) =>
+                                _authController.user.email = value!,
                           ),
-                          const CustomTextField(
+                          CustomTextField(
                             icon: Icons.lock,
                             labelText: 'Password',
                             isSecret: true,
                             validator: Validators.isRequired,
+                            onSaved: (value) =>
+                                _authController.user.password = value!,
                           ),
-                          const CustomTextField(
+                          CustomTextField(
                             icon: Icons.person,
                             labelText: 'Name',
                             validator: Validators.isFullname,
+                            onSaved: (value) =>
+                                _authController.user.name = value!,
                           ),
                           CustomTextField(
                             icon: Icons.phone,
-                            labelText: 'Celular',
+                            labelText: 'Phone',
                             keyboardType: TextInputType.phone,
                             inputFormatters: [phoneFormatter],
                             validator: Validators.isPhone,
+                            onSaved: (value) =>
+                                _authController.user.phone = value!,
                           ),
                           CustomTextField(
                             icon: Icons.file_copy,
@@ -104,18 +112,25 @@ class SignUpScreen extends StatelessWidget {
                             keyboardType: TextInputType.number,
                             inputFormatters: [cpfFormatter],
                             validator: Validators.isCPF,
+                            onSaved: (value) =>
+                                _authController.user.cpf = value!,
                           ),
                           SizedBox(
                             height: 50,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {}
-                              },
-                              child: const Text(
-                                'Cadastrar Usuário',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.white,
+                            child: Obx(
+                              () => ElevatedButton(
+                                onPressed: _authController.isLoading.value ? null : () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save(); // call all the TextField's "onSaved" methods
+                                    await _authController.signUp();
+                                  }
+                                },
+                                child: _authController.isLoading.value ? const CircularProgressIndicator() : const Text(
+                                  'Cadastrar Usuário',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),

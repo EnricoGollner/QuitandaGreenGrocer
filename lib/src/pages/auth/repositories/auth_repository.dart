@@ -57,7 +57,7 @@ class AuthRepository {
       return AuthResult.success(user);
     } else {
       return AuthResult.error(
-        auth_errors.authErrorsString(result['error']),
+        auth_errors.handleAuthErrors(result['error']),
       );
     }
   }

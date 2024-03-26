@@ -14,7 +14,7 @@ class AuthController extends GetxController {
   final AuthRepository _authRepository = AuthRepository();
   final LocalDataRepository _localDataRepository = LocalDataRepository();
 
-  Future<void> saveTokenAndProceedToBase() async {
+  Future<void> _saveTokenAndProceedToBase() async {
     await _localDataRepository.saveLocalData(key: StorageKeys.token, value: user.token!);
     Get.offAllNamed(PagesRoutes.base);
   }
@@ -37,13 +37,12 @@ class AuthController extends GetxController {
 
   Future<void> signIn({required String email, required String password}) async {
     isLoading.value = true;
-
     AuthResult result = await _authRepository.signIn(email: email, password: password);
     isLoading.value = false;
 
     result.when(success: (user) async {
       this.user = user;
-      await saveTokenAndProceedToBase();
+      await _saveTokenAndProceedToBase();
     }, error: (message) {
       FlutterToastUtil.show(message: message, isError: true);
     });
@@ -51,13 +50,12 @@ class AuthController extends GetxController {
 
   Future<void> signUp() async {
     isLoading.value = true;
-
     AuthResult result = await _authRepository.signUp(user: user);
     isLoading.value = false;
 
     result.when(success: (user) async {
       this.user = user;
-      await saveTokenAndProceedToBase();
+      await _saveTokenAndProceedToBase();
     }, error: (message) {
       FlutterToastUtil.show(message: message, isError: true);
     });

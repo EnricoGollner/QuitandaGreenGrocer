@@ -1,4 +1,4 @@
-String authErrorsString(String? code) {
+String handleAuthErrors(String? code) {
   switch (code) {
     case 'INVALID_CREDENTIALS':
       return 'Email e/ou senha inválidos';
@@ -14,7 +14,8 @@ String authErrorsString(String? code) {
 
     case 'INVALID_CPF':
       return 'Ocorreu um erro ao cadastrar usuário: CPF inválido';
-
+    case 'Account already exists for this username.':
+      return 'Já existe uma conta cadastrada com este E-mail';
     default:
       return 'Um erro indefinido ocorreu';
   }
