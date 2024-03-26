@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/pages/base/common_widgets/quantity_widget.dart';
+import 'package:quitanda_app/src/pages/base/controllers/navigation_controller.dart';
 
 class ProductScreen extends StatefulWidget {
   final ItemModel item;
@@ -96,7 +98,10 @@ class _ProductScreenState extends State<ProductScreen> {
                         child: ElevatedButton.icon(
                           style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.back();
+                            Get.find<NavigationController>().navigatePageView(NavigationTabs.cart);
+                          },
                           label: const Text('Add to cart',
                               style: TextStyle(
                                 fontSize: 18,

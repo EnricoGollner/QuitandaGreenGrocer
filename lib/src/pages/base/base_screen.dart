@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:quitanda_app/src/pages/base/controllers/navigation_controller.dart';
 import 'package:quitanda_app/src/pages/cart/screens/cart_tab.dart';
 import 'package:quitanda_app/src/pages/home/screens/home_tab.dart';
 import 'package:quitanda_app/src/pages/orders/screens/orders_tab.dart';
@@ -12,22 +14,15 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  int _currentIndex = 0;
+  final NavigationController _navigationController = Get.find<NavigationController>();
 
-  final PageController _pageController = PageController();
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
-        controller: _pageController,
+        controller: _navigationController.pageController,
         children: const [
           HomeTab(),
           CartTab(),
@@ -36,18 +31,13 @@ class _BaseScreenState extends State<BaseScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: _navigationController.currentIndex,
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.green,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white.withAlpha(100),
         onTap: (index) => setState(() {
-          _currentIndex = index;
-          _pageController.animateToPage(
-            index,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.ease,
-          );
+          _navigationController.navigatePageView(index);
         }),
         items: const [
           BottomNavigationBarItem(
