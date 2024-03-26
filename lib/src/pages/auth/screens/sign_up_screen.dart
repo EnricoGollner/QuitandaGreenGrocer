@@ -120,6 +120,8 @@ class SignUpScreen extends StatelessWidget {
                             child: Obx(
                               () => ElevatedButton(
                                 onPressed: _authController.isLoading.value ? null : () async {
+                                  FocusScope.of(context).unfocus();
+
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save(); // call all the TextField's "onSaved" methods
                                     await _authController.signUp();

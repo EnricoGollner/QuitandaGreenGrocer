@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
-import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
 import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -15,7 +14,7 @@ class ProfileTab extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => Get.find<AuthController>().signOut(),
+            onPressed: () async => await Get.find<AuthController>().signOut(),
           ),
         ],
       ),
@@ -25,24 +24,24 @@ class ProfileTab extends StatelessWidget {
         children: [
           CustomTextField(
             isReadOnly: true,
-            initialValue: app_data.users.email,
+            initialValue: Get.find<AuthController>().user.email,
             icon: Icons.mail,
             labelText: 'E-mail',
           ),
           CustomTextField(
-            initialValue: app_data.users.name,
+            initialValue: Get.find<AuthController>().user.name,
             icon: Icons.person,
             labelText: 'Name',
           ),
           CustomTextField(
             isReadOnly: true,
-            initialValue: app_data.users.phone,
+            initialValue: Get.find<AuthController>().user.phone,
             icon: Icons.phone,
             labelText: 'Phone',
           ),
           CustomTextField(
             isReadOnly: true,
-            initialValue: app_data.users.cpf,
+            initialValue: Get.find<AuthController>().user.cpf,
             icon: Icons.file_copy,
             labelText: 'CPF',
             isSecret: true,

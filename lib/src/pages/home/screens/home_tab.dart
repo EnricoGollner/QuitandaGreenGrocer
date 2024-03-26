@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/models/category_model.dart';
+import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/pages/base/common_widgets/custom_shimmer.dart';
 import 'package:quitanda_app/src/pages/home/components/app_name_widget.dart';
 import 'package:quitanda_app/src/pages/home/components/category_tile.dart';
 import 'package:quitanda_app/src/pages/home/components/item_tile.dart';
 import 'package:quitanda_app/src/pages/home/controllers/home_controller.dart';
-import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -94,16 +94,13 @@ class _HomeTabState extends State<HomeTab> {
               return Container(
                   padding: const EdgeInsets.only(left: 25),
                   height: 40,
-                  child: !controller.isLoading
+                  child: !controller.isCategoryLoading
                       ? ListView.separated(
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(width: 10),
+                          separatorBuilder: (_, __) => const SizedBox(width: 10),
                           itemCount: controller.allCategories.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            final CategoryModel category =
-                                controller.allCategories[index];
-
+                            final CategoryModel category = controller.allCategories[index];
                             return CategoryTile(
                               categoryName: category.title,
                               isSelected:
@@ -131,7 +128,7 @@ class _HomeTabState extends State<HomeTab> {
             }),
             GetBuilder<HomeController>(builder: (homeController) {
               return Expanded(
-                child: !homeController.isLoading
+                child: !homeController.isProductLoading
                     ? GridView.builder(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                         physics: const BouncingScrollPhysics(),
@@ -142,13 +139,13 @@ class _HomeTabState extends State<HomeTab> {
                           crossAxisSpacing: 10,
                           childAspectRatio: 9 / 11.5,
                         ),
-                        itemCount: homeController.allCategories.length,
+                        itemCount: homeController.allProducts.length,
                         itemBuilder: (_, index) {
-
-
+                          final ItemModel item = homeController.allProducts[index];
                           return ItemTile(
-                              item: app_data.items[index],
-                              cartAnimationMethod: itemSelectedCartAnimations);
+                            item: item,
+                            cartAnimationMethod: itemSelectedCartAnimations,
+                          );
                         },
                       )
                     : GridView.count(

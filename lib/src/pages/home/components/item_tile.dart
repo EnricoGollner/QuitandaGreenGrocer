@@ -35,7 +35,10 @@ class _ItemTileState extends State<ItemTile> {
     return Stack(
       children: [
         InkWell(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProductScreen(item: widget.item))),
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProductScreen(item: widget.item))),
           child: Card(
             elevation: 1,
             color: Colors.white,
@@ -53,7 +56,19 @@ class _ItemTileState extends State<ItemTile> {
                       tag: widget.item.imgUrl,
                       child: Container(
                         key: imageGk,
-                        child: Image.asset(
+                        child: Image.network(
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!
+                                    : null,
+                              ),
+                            );
+                          },
                           widget.item.imgUrl,
                         ),
                       ),
