@@ -21,6 +21,8 @@ class _HomeTabState extends State<HomeTab> {
   final GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey();
   late Function(GlobalKey) runAddToCardAnimation;
 
+  final TextEditingController _searchController = TextEditingController();
+
   void itemSelectedCartAnimations(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
   }
@@ -66,29 +68,55 @@ class _HomeTabState extends State<HomeTab> {
                 )
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  filled: true,
-                  isDense: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(60),
-                    borderSide: const BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
+            //Campo de Pesquisa
+            GetBuilder<HomeController>(
+              builder: (homeController) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: TextFormField(
+                    controller: _searchController,
+                    onTapOutside: (_) =>
+                        FocusManager.instance.primaryFocus!.unfocus(),
+                    onChanged: (value) {
+                      homeController.searchTitle.value = value;
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      isDense: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(60),
+                        borderSide: const BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      hintText: 'Pesquise aqui...',
+                      hintStyle:
+                          TextStyle(color: Colors.grey.shade400, fontSize: 14),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: CustomColors.customContrastColor,
+                      ),
+                      suffixIcon: homeController.searchTitle.isNotEmpty
+                          ? IconButton(
+                              onPressed: () {
+                                _searchController.clear();
+                                homeController.searchTitle.value = '';
+                                FocusManager.instance.primaryFocus!.unfocus();
+                              },
+                              icon: Icon(
+                                Icons.close,
+                                color: CustomColors.customContrastColor,
+                                size: 21,
+                              ),
+                            )
+                          : null,
                     ),
                   ),
-                  hintText: 'Pesquise aqui...',
-                  hintStyle:
-                      TextStyle(color: Colors.grey.shade400, fontSize: 14),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: CustomColors.customContrastColor,
-                  ),
-                ),
-              ),
+                );
+              },
             ),
             GetBuilder<HomeController>(builder: (controller) {
               return Container(
@@ -96,11 +124,13 @@ class _HomeTabState extends State<HomeTab> {
                   height: 40,
                   child: !controller.isCategoryLoading
                       ? ListView.separated(
-                          separatorBuilder: (_, __) => const SizedBox(width: 10),
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(width: 10),
                           itemCount: controller.allCategories.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            final CategoryModel category = controller.allCategories[index];
+                            final CategoryModel category =
+                                controller.allCategories[index];
                             return CategoryTile(
                               categoryName: category.title,
                               isSelected:
@@ -129,28 +159,47 @@ class _HomeTabState extends State<HomeTab> {
             GetBuilder<HomeController>(builder: (homeController) {
               return Expanded(
                 child: !homeController.isProductLoading
-                    ? GridView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                        physics: const BouncingScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 9 / 11.5,
+                    ? Visibility(
+                        visible: (homeController.currentCategory?.items ?? [])
+                            .isNotEmpty,
+                        replacement: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off,
+                              size: 40,
+                              color: CustomColors.customSwatchColor,
+                            ),
+                            const Text('Não há itens para apresentar'),
+                          ],
                         ),
-                        itemCount: homeController.allProducts.length,
-                        itemBuilder: (_, index) {
-                          if (index + 1 == homeController.allProducts.length && !homeController.isLastPage) {  // last product of the list
-                            homeController.loadMoreProducts();
-                          }
+                        child: GridView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 9 / 11.5,
+                          ),
+                          itemCount: homeController.allProducts.length,
+                          itemBuilder: (_, index) {
+                            if (index + 1 ==
+                                    homeController.allProducts.length &&
+                                !homeController.isLastPage) {
+                              // last product of the list
+                              homeController.loadMoreProducts();
+                            }
 
-                          final ItemModel item = homeController.allProducts[index];
-                          return ItemTile(
-                            item: item,
-                            cartAnimationMethod: itemSelectedCartAnimations,
-                          );
-                        },
+                            final ItemModel item =
+                                homeController.allProducts[index];
+                            return ItemTile(
+                              item: item,
+                              cartAnimationMethod: itemSelectedCartAnimations,
+                            );
+                          },
+                        ),
                       )
                     : GridView.count(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
