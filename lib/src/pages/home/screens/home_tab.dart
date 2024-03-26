@@ -141,6 +141,10 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         itemCount: homeController.allProducts.length,
                         itemBuilder: (_, index) {
+                          if (index + 1 == homeController.allProducts.length && !homeController.isLastPage) {  // last product of the list
+                            homeController.loadMoreProducts();
+                          }
+
                           final ItemModel item = homeController.allProducts[index];
                           return ItemTile(
                             item: item,

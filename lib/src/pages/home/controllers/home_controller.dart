@@ -16,6 +16,13 @@ class HomeController extends GetxController {
   CategoryModel? currentCategory;
   List<ItemModel> get allProducts => currentCategory?.items ?? [];
 
+  bool get isLastPage {
+    if (currentCategory!.items.length < itemsPerPage) {
+      return true;
+    }
+    return currentCategory!.pagination * itemsPerPage > allProducts.length;
+  }
+
   @override
   void onInit() { // Request the categories when the controller is initialized
     getAllCategories();
@@ -56,8 +63,9 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> getAllProducts() async {
-    _setLoading(true, isProduct: true);
+  Future<void> getAllProducts({bool canLoad = true}) async {
+    if(canLoad) _setLoading(true, isProduct: true);
+
     Map<String, dynamic> body = {
       'page': currentCategory!.pagination,
       'categoryId': currentCategory!.id,
@@ -69,11 +77,16 @@ class HomeController extends GetxController {
 
     result.when(
       success: (data) {
-        currentCategory!.items = data;
+        currentCategory!.items.addAll(data);
       },
       error: (message) {
         FlutterToastUtil.show(message: message, isError: true);
       },
     );
+  }
+
+  Future<void> loadMoreProducts() async {
+    currentCategory!.pagination++;
+    await getAllProducts(canLoad: false);
   }
 }
