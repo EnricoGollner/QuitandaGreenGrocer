@@ -77,9 +77,9 @@ List<String> categories = [
 ];
 
 List<CartItemModel> cartItems = [
-  CartItemModel(item: apple, quantity: 2),
-  CartItemModel(item: mango, quantity: 1),
-  CartItemModel(item: guava, quantity: 3),
+  // CartItemModel(item: apple, quantity: 2),
+  // CartItemModel(item: mango, quantity: 1),
+  // CartItemModel(item: guava, quantity: 3),
 ];
 
 UserModel users = UserModel(
@@ -96,10 +96,12 @@ List<OrderModel> orders = [
     overdueDateTime: DateTime.parse('2024-06-08 11:00:10.458'),
     items: [
       CartItemModel(
+        id: '',
         item: apple,
         quantity: 2,
       ),
       CartItemModel(
+        id: '',
         item: guava,
         quantity: 3,
       ),
@@ -114,10 +116,10 @@ List<OrderModel> orders = [
     createdDateTime: DateTime.parse('2022-06-08 10:00:10.458'),
     overdueDateTime: DateTime.parse('2022-06-08 11:00:10.458'),
     items: [
-      CartItemModel(
-        item: apple,
-        quantity: 2,
-      ),
+      // CartItemModel(
+      //   item: apple,
+      //   quantity: 2,
+      // ),
     ],
     status: 'delivered',
     copyAndPaste: 'q1w2e3r4t5y6',

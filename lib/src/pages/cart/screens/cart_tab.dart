@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
-import 'package:quitanda_app/src/core/utils/app_data.dart' as app_data;
 import 'package:quitanda_app/src/core/utils/toast_util.dart';
-import 'package:quitanda_app/src/models/cart_item_model.dart';
+import 'package:quitanda_app/src/models/order_model.dart';
 import 'package:quitanda_app/src/pages/base/common_widgets/payment_dialog.dart';
 import 'package:quitanda_app/src/pages/cart/components/cart_tile.dart';
+import 'package:quitanda_app/src/pages/cart/controllers/cart_controller.dart';
 
 class CartTab extends StatefulWidget {
   const CartTab({super.key});
@@ -18,9 +19,9 @@ class _CartTabState extends State<CartTab> {
   double cartTotalPrice() {
     double total = 0;
 
-    for (var cartItem in app_data.cartItems) {
-      total += cartItem.totalPrice();
-    }
+    // for (var cartItem in app_data.cartItems) {
+    //   total += cartItem.totalPrice();
+    // }
 
     return total;
   }
@@ -34,12 +35,15 @@ class _CartTabState extends State<CartTab> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: app_data.cartItems.length,
-              itemBuilder: (_, index) {
-                return CartTile(
-                  cartItem: app_data.cartItems[index],
-                  removeItem: _removeItemFromCart,
+            child: GetBuilder<CartController>(
+              builder: (controller) {
+                return ListView.builder(
+                  itemCount: controller.cartItems.length,
+                  itemBuilder: (_, index) {
+                    return CartTile(
+                      cartItem: controller.cartItems[index],
+                    );
+                  },
                 );
               },
             ),
@@ -68,13 +72,17 @@ class _CartTabState extends State<CartTab> {
                       fontSize: 12,
                     ),
                   ),
-                  Text(
-                    Formatters.priceToCurrency(cartTotalPrice()),
-                    style: TextStyle(
-                      fontSize: 23,
-                      color: CustomColors.customSwatchColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  GetBuilder<CartController>(
+                    builder: (controller) {
+                      return Text(
+                        Formatters.priceToCurrency(controller.cartTotalPrice()),
+                        style: TextStyle(
+                          fontSize: 23,
+                          color: CustomColors.customSwatchColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 50,
@@ -89,12 +97,22 @@ class _CartTabState extends State<CartTab> {
                               context: context,
                               builder: (context) {
                                 return PaymentDialog(
-                                  order: app_data.orders.first,
+                                  order: OrderModel(
+                                    id: '',
+                                    createdDateTime: DateTime.now(),
+                                    overdueDateTime: DateTime.now()
+                                        .add(const Duration(hours: 1)),
+                                    items: [],
+                                    status: 'pending_payment',
+                                    copyAndPaste: '',
+                                    total: cartTotalPrice(),
+                                  ),
                                 );
                               },
                             );
                           } else {
-                            FlutterToastUtil.show(message: 'Order not confirmed!', isError: true);
+                            FlutterToastUtil.show(
+                                message: 'Order not confirmed!', isError: true);
                           }
                         });
                       },
@@ -111,12 +129,6 @@ class _CartTabState extends State<CartTab> {
         ],
       ),
     );
-  }
-
-  void _removeItemFromCart(CartItemModel cartItem) {
-    setState(() => app_data.cartItems.remove(cartItem));
-
-    FlutterToastUtil.show(message: '${cartItem.item.itemName} removed from cart!');
   }
 
   Future<bool?> _showOrderConfirmation() {

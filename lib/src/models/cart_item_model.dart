@@ -5,13 +5,13 @@ part 'cart_item_model.g.dart';
 
 @JsonSerializable()
 class CartItemModel {
-  String? id;
+  String id;
   @JsonKey(name: 'product')
   ItemModel item;
   int quantity;
 
   CartItemModel({
-    this.id,
+    required this.id,
     required this.item,
     required this.quantity,
   });

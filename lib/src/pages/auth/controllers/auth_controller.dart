@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/constants/storage_keys.dart';
-import 'package:quitanda_app/src/core/pages_routes/app_pages.dart';
+import 'package:quitanda_app/src/core/utils/app_pages.dart';
 import 'package:quitanda_app/src/core/utils/toast_util.dart';
 import 'package:quitanda_app/src/models/user_model.dart';
 import 'package:quitanda_app/src/pages/auth/repositories/auth_repository.dart';
