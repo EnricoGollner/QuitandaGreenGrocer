@@ -47,13 +47,29 @@ class CartController extends GetxController {
     return cartItems.indexWhere((itemInList) => itemInList.item.id == item.id);
   }
 
-  Future<void> addItemToCart({required ItemModel item, int quantity = 1}) async {
+  Future<void> addItemToCart(
+      {required ItemModel item, int quantity = 1}) async {
     int itemIndex = getItemIndex(item);
 
     if (itemIndex != -1) {
       cartItems[itemIndex].quantity += quantity;
     } else {
-      cartItems.add(CartItemModel(id: '', item: item, quantity: quantity));
+      final CartResult<String> result = await _cartRepository.addItemToCart(
+        userId: _authController.user.id!,
+        token: _authController.user.token!,
+        productId: item.id,
+        quantity: quantity,
+      );
+
+      result.when(success: (cartItemId) {
+        cartItems.add(CartItemModel(
+          id: cartItemId,
+          item: item,
+          quantity: quantity,
+        ));
+      }, error: (message) {
+        FlutterToastUtil.show(message: message);
+      });
     }
 
     update();
