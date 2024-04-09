@@ -18,10 +18,7 @@ class CartRepository {
     );
 
     if (result['result'] != null) {
-      List<CartItemModel> data =
-          List<Map<String, dynamic>>.from(result['result'])
-              .map(CartItemModel.fromJson)
-              .toList();
+      List<CartItemModel> data = List<Map<String, dynamic>>.from(result['result']).map(CartItemModel.fromJson).toList();
       return CartResult<List<CartItemModel>>.success(data);
     } else {
       return CartResult.error('Ocorreu um erro ao recuperar os itens do carrinho.');
@@ -38,7 +35,7 @@ class CartRepository {
       method: HTTPMethods.post,
       body: {
         'cartItemId': cartItemId,
-        'qauntity': quantity,
+        'quantity': quantity,
       },
       headers: {
         'X-Parse-Session-Token': token,
@@ -59,7 +56,7 @@ class CartRepository {
       method: HTTPMethods.post,
       body: {
         'user': userId,
-        'qauntity': quantity,
+        'quantity': quantity,
         'productId': productId,
       },
       headers: {
