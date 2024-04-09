@@ -5,6 +5,7 @@ import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/app_pages.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
+import 'package:quitanda_app/src/pages/cart/controllers/cart_controller.dart';
 
 class ItemTile extends StatefulWidget {
   final ItemModel item;
@@ -23,12 +24,20 @@ class ItemTile extends StatefulWidget {
 class _ItemTileState extends State<ItemTile> {
   final GlobalKey<CartIconKey> imageGk = GlobalKey();
 
+  late CartController _cartController;
+
   IconData tileIcon = Icons.add_shopping_cart_outlined;
 
   Future<void> _switchIcon() async {
     setState(() => tileIcon = Icons.check);
     await Future.delayed(const Duration(milliseconds: 2000));
     setState(() => tileIcon = Icons.add_shopping_cart_outlined);
+  }
+
+  @override
+  void initState() {
+    _cartController = Get.find<CartController>();
+    super.initState();
   }
 
   @override
@@ -116,6 +125,7 @@ class _ItemTileState extends State<ItemTile> {
               child: InkWell(
                 onTap: () async {
                   widget.cartAnimationMethod(imageGk);
+                  await _cartController.addItemToCart(item: widget.item);
                   await _switchIcon();
                 },
                 child: Ink(
