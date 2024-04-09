@@ -16,7 +16,6 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   final NavigationController _navigationController = Get.find<NavigationController>();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -8,18 +8,22 @@ import 'package:quitanda_app/src/pages/base/controllers/navigation_controller.da
 import 'package:quitanda_app/src/pages/cart/controllers/cart_controller.dart';
 
 class ProductScreen extends StatefulWidget {
-  final ItemModel item;
-
-  const ProductScreen({super.key, required this.item});
+  const ProductScreen({super.key});
 
   @override
   State<ProductScreen> createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  final ItemModel item = Get.arguments as ItemModel;
   int carItemQuantity = 1;
-
   final CartController _cartController = Get.find<CartController>(); 
+
+  @override
+  void initState() {
+    
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +35,8 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               Expanded(
                 child: Hero(
-                  tag: widget.item.imgUrl,
-                  child: Image.network(widget.item.imgUrl),
+                  tag: item.imgUrl,
+                  child: Image.network(item.imgUrl),
                 ),
               ),
               Expanded(
@@ -57,7 +61,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         children: [
                           Expanded(
                             child: Text(
-                              widget.item.itemName,
+                              item.itemName,
                               maxLines: 2,
                               style: const TextStyle(
                                 fontSize: 27,
@@ -68,7 +72,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                           QuantityWidget(
                             quantity: carItemQuantity,
-                            unityText: widget.item.unit,
+                            unityText: item.unit,
                             updateQuantity: (newQuantity) {
                               setState(() => carItemQuantity = newQuantity);
                             },
@@ -76,7 +80,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         ],
                       ),
                       Text(
-                        Formatters.priceToCurrency(widget.item.price),
+                        Formatters.priceToCurrency(item.price),
                         style: TextStyle(
                           fontSize: 23,
                           fontWeight: FontWeight.bold,
@@ -88,7 +92,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           child: SingleChildScrollView(
                             child: Text(
-                              widget.item.description,
+                              item.description,
                               style: const TextStyle(
                                 height: 1.5,
                               ),
@@ -104,7 +108,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           onPressed: () async {
                             Get.back();
 
-                            await _cartController.addItemToCart(item: widget.item, quantity: carItemQuantity);
+                            await _cartController.addItemToCart(item: item, quantity: carItemQuantity);
 
                             Get.find<NavigationController>().navigatePageView(NavigationTabs.cart);
                           },

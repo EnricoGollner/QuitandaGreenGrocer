@@ -24,9 +24,28 @@ class CartRepository {
               .toList();
       return CartResult<List<CartItemModel>>.success(data);
     } else {
-      return CartResult.error(
-          'Ocorreu um erro ao recuperar os itens do carrinho.');
+      return CartResult.error('Ocorreu um erro ao recuperar os itens do carrinho.');
     }
+  }
+
+  Future<bool> changeItemQuantity({
+    required String token,
+    required String cartItemId,
+    required int quantity,
+  }) async {
+    final Map result = await _httpManager.restRequest(
+      url: Endpoints.changeItemQuantity,
+      method: HTTPMethods.post,
+      body: {
+        'cartItemId': cartItemId,
+        'qauntity': quantity,
+      },
+      headers: {
+        'X-Parse-Session-Token': token,
+      },
+    );
+
+    return result.isEmpty;
   }
 
   Future<CartResult<String>> addItemToCart({
@@ -35,7 +54,7 @@ class CartRepository {
     required String productId,
     required int quantity,
   }) async {
-    final result = await _httpManager.restRequest(
+    final Map result = await _httpManager.restRequest(
       url: Endpoints.addItemsToCart,
       method: HTTPMethods.post,
       body: {

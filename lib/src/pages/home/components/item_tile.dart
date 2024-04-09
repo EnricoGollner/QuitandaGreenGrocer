@@ -2,9 +2,9 @@ import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
+import 'package:quitanda_app/src/core/utils/app_pages.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
-import 'package:quitanda_app/src/pages/product/screens/product_screen.dart';
 
 class ItemTile extends StatefulWidget {
   final ItemModel item;
@@ -36,7 +36,7 @@ class _ItemTileState extends State<ItemTile> {
     return Stack(
       children: [
         InkWell(
-          onTap: () => Get.to(() => ProductScreen(item: widget.item)),
+          onTap: () => Get.toNamed(PagesRoutes.product, arguments: widget.item),
           child: Card(
             elevation: 1,
             color: Colors.white,

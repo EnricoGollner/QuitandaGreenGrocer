@@ -5,6 +5,7 @@ import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/models/category_model.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/pages/base/common_widgets/custom_shimmer.dart';
+import 'package:quitanda_app/src/pages/cart/controllers/cart_controller.dart';
 import 'package:quitanda_app/src/pages/home/components/app_name_widget.dart';
 import 'package:quitanda_app/src/pages/home/components/category_tile.dart';
 import 'package:quitanda_app/src/pages/home/components/item_tile.dart';
@@ -21,10 +22,17 @@ class _HomeTabState extends State<HomeTab> {
   final GlobalKey<CartIconKey> globalKeyCartItems = GlobalKey();
   late Function(GlobalKey) runAddToCardAnimation;
 
+  late CartController _cartController;
   final TextEditingController _searchController = TextEditingController();
 
   void itemSelectedCartAnimations(GlobalKey gkImage) {
     runAddToCardAnimation(gkImage);
+  }
+
+  @override
+  initState() {
+    _cartController = Get.find<CartController>();
+    super.initState();
   }
 
   @override
@@ -50,9 +58,9 @@ class _HomeTabState extends State<HomeTab> {
                 Badge(
                   backgroundColor: CustomColors.customContrastColor,
                   offset: const Offset(-14, 7),
-                  label: const Text(
-                    '2',
-                    style: TextStyle(fontSize: 12),
+                  label: Text(
+                    _cartController.getCartTotalItems().toString(),
+                    style: const TextStyle(fontSize: 12),
                   ),
                   child: IconButton(
                     onPressed: () {},
@@ -65,7 +73,7 @@ class _HomeTabState extends State<HomeTab> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
             //Campo de Pesquisa

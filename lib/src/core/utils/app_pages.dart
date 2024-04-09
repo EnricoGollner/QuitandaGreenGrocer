@@ -6,6 +6,7 @@ import 'package:quitanda_app/src/pages/base/base_screen.dart';
 import 'package:quitanda_app/src/pages/base/binding/navigation_binding.dart';
 import 'package:quitanda_app/src/pages/cart/binding/cart_binding.dart';
 import 'package:quitanda_app/src/pages/home/binding/home_binding.dart';
+import 'package:quitanda_app/src/pages/product/screens/product_screen.dart';
 
 abstract class AppPages {
   static final pages = <GetPage>[
@@ -18,8 +19,12 @@ abstract class AppPages {
       bindings: [
         NavigationBinding(),
         HomeBinding(),
-        CartBinding()
+        CartBinding(),
       ],
+    ),
+    GetPage(
+      name: PagesRoutes.product,
+      page: () => const ProductScreen(),
     ),
   ];
 }
@@ -29,4 +34,5 @@ abstract class PagesRoutes {
   static const String signIn = '/signin';
   static const String signUp = '/signup';
   static const String base = '/';
+  static const String product = '/product';
 }
