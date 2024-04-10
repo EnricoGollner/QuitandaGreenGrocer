@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
@@ -16,6 +18,8 @@ class CartTab extends StatefulWidget {
 }
 
 class _CartTabState extends State<CartTab> {
+  final CartController _cartController = Get.find<CartController>();
+
   double cartTotalPrice() {
     double total = 0;
 
@@ -108,8 +112,11 @@ class _CartTabState extends State<CartTab> {
                         backgroundColor: CustomColors.customSwatchColor,
                       ),
                       onPressed: () async {
-                        _showOrderConfirmation().then((result) {
-                          if (result ?? false) {
+                        final bool? result = await _showOrderConfirmation();
+
+                        if (result ?? false) {
+                            await _cartController.checkoutCart();
+                            
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -117,8 +124,7 @@ class _CartTabState extends State<CartTab> {
                                   order: OrderModel(
                                     id: '',
                                     createdDateTime: DateTime.now(),
-                                    overdueDateTime: DateTime.now()
-                                        .add(const Duration(hours: 1)),
+                                    overdueDateTime: DateTime.now().add(const Duration(hours: 1)),
                                     items: [],
                                     status: 'pending_payment',
                                     copyAndPaste: '',
@@ -128,10 +134,8 @@ class _CartTabState extends State<CartTab> {
                               },
                             );
                           } else {
-                            FlutterToastUtil.show(
-                                message: 'Order not confirmed!', isError: true);
+                            FlutterToastUtil.show(message: 'Pedido não confirmado');
                           }
-                        });
                       },
                       child: const Text(
                         'Finish Order',

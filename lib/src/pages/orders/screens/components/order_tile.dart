@@ -9,7 +9,6 @@ class OrderTile extends StatelessWidget {
   final OrderModel order;
 
   const OrderTile({super.key, required this.order});
-
   @override
   Widget build(BuildContext context) {
     return Card(

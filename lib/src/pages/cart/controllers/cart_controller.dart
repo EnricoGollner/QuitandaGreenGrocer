@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/utils/toast_util.dart';
 import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
+import 'package:quitanda_app/src/models/order_model.dart';
 import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 import 'package:quitanda_app/src/pages/cart/cart_result/cart_result.dart';
 import 'package:quitanda_app/src/pages/cart/repositories/cart_repository.dart';
@@ -26,6 +27,21 @@ class CartController extends GetxController {
     }
 
     return total;
+  }
+
+  Future checkoutCart() async {
+    final CartResult<OrderModel> result = await _cartRepository.checkoutCart(
+      token: _authController.user.token!,
+      total: cartTotalPrice().toString(),
+    );
+
+    result.when(success: (order) {
+      cartItems.clear();
+      update();
+      FlutterToastUtil.show(message: 'Pedido realizado com sucesso');
+    }, error: (message) {
+      FlutterToastUtil.show(message: message, isError: true);
+    });
   }
 
   Future<bool> changeItemQuantity({required CartItemModel item, required int quantity}) async {
