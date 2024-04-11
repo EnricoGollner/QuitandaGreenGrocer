@@ -2,8 +2,7 @@ import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
-import 'package:quitanda_app/src/core/utils/qrcode_util.dart';
-import 'package:quitanda_app/src/core/utils/toast_util.dart';
+import 'package:quitanda_app/src/core/utils/utils_services.dart';
 import 'package:quitanda_app/src/models/order_model.dart';
 
 class PaymentDialog extends StatelessWidget {
@@ -34,7 +33,7 @@ class PaymentDialog extends StatelessWidget {
                 ),
                 //QR CODE
                 Image.memory(
-                  QRCodeUtil.generateQRCode(order.qrCodeImage),
+                  UtilsServices.generateQRCode(order.qrCodeImage),
                   height: 200,
                   width: 200,
                 ),
@@ -67,7 +66,7 @@ class PaymentDialog extends StatelessWidget {
                   ),
                   onPressed: () {
                     FlutterClipboard.copy(order.copyAndPaste);
-                    FlutterToastUtil.show(message: 'Código copiado');
+                    UtilsServices.showFlutterToast(message: 'Código copiado');
                   },
                   icon: const Icon(
                     Icons.copy,

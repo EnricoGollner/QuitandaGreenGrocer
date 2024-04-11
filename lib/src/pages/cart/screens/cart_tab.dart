@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
-import 'package:quitanda_app/src/core/utils/toast_util.dart';
+import 'package:quitanda_app/src/core/utils/utils_services.dart';
 import 'package:quitanda_app/src/pages/cart/components/cart_tile.dart';
 import 'package:quitanda_app/src/pages/cart/controllers/cart_controller.dart';
 
@@ -114,7 +114,7 @@ class _CartTabState extends State<CartTab> {
                                   if (result ?? false) {
                                     await _cartController.checkoutCart();
                                   } else {
-                                    FlutterToastUtil.show(message: 'Pedido não confirmado');
+                                    UtilsServices.showFlutterToast(message: 'Pedido não confirmado');
                                   }
                                 },
                           child: controller.isCheckoutLoading

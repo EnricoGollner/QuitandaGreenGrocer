@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:quitanda_app/src/core/utils/toast_util.dart';
+import 'package:quitanda_app/src/core/utils/utils_services.dart';
 import 'package:quitanda_app/src/models/category_model.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/pages/home/repositories/home_repository.dart';
@@ -64,7 +64,7 @@ class HomeController extends GetxController {
         await selectCategory(data.first);
       },
       error: (message) {
-        FlutterToastUtil.show(message: message, isError: true);
+        UtilsServices.showFlutterToast(message: message, isError: true);
       },
     );
   }
@@ -94,7 +94,7 @@ class HomeController extends GetxController {
         currentCategory!.items.addAll(data);
       },
       error: (message) {
-        FlutterToastUtil.show(message: message, isError: true);
+        UtilsServices.showFlutterToast(message: message, isError: true);
       },
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quitanda_app/src/core/utils/toast_util.dart';
+import 'package:quitanda_app/src/core/utils/utils_services.dart';
 import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/models/order_model.dart';
@@ -61,9 +61,9 @@ class CartController extends GetxController {
             );
           },
         );
-        FlutterToastUtil.show(message: 'Pedido realizado com sucesso');
+        UtilsServices.showFlutterToast(message: 'Pedido realizado com sucesso');
       }, error: (message) {
-        FlutterToastUtil.show(message: message, isError: true);
+        UtilsServices.showFlutterToast(message: message, isError: true);
       },
     );
   }
@@ -83,7 +83,7 @@ class CartController extends GetxController {
       }
       update();
     } else {
-      FlutterToastUtil.show(message: 'Ocorreu um erro ao alterar a quantidade do produto', isError: true);
+      UtilsServices.showFlutterToast(message: 'Ocorreu um erro ao alterar a quantidade do produto', isError: true);
     }
 
     return result;
@@ -99,7 +99,7 @@ class CartController extends GetxController {
       cartItems = data;
       update();
     }, error: (message) {
-      FlutterToastUtil.show(message: message, isError: true);
+      UtilsServices.showFlutterToast(message: message, isError: true);
     });
   }
 
@@ -130,7 +130,7 @@ class CartController extends GetxController {
           quantity: quantity,
         ));
       }, error: (message) {
-        FlutterToastUtil.show(message: message, isError: true);
+        UtilsServices.showFlutterToast(message: message, isError: true);
       });
     }
 

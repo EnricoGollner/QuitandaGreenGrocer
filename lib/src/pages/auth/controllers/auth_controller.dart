@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/constants/storage_keys.dart';
 import 'package:quitanda_app/src/core/utils/app_pages.dart';
-import 'package:quitanda_app/src/core/utils/toast_util.dart';
+import 'package:quitanda_app/src/core/utils/utils_services.dart';
 import 'package:quitanda_app/src/models/user_model.dart';
 import 'package:quitanda_app/src/pages/auth/repositories/auth_repository.dart';
 import 'package:quitanda_app/src/pages/auth/result/auth_result.dart';
@@ -29,7 +29,7 @@ class AuthController extends GetxController {
         this.user = user;
         Get.offAllNamed(PagesRoutes.base);
       }, error: (message) {
-        FlutterToastUtil.show(message: message, isError: true);
+        UtilsServices.showFlutterToast(message: message, isError: true);
         signOut();
       });
     });
@@ -44,7 +44,7 @@ class AuthController extends GetxController {
       this.user = user;
       await _saveTokenAndProceedToBase();
     }, error: (message) {
-      FlutterToastUtil.show(message: message, isError: true);
+      UtilsServices.showFlutterToast(message: message, isError: true);
     });
   }
 
@@ -57,7 +57,7 @@ class AuthController extends GetxController {
       this.user = user;
       await _saveTokenAndProceedToBase();
     }, error: (message) {
-      FlutterToastUtil.show(message: message, isError: true);
+      UtilsServices.showFlutterToast(message: message, isError: true);
     });
   }
 
