@@ -45,7 +45,7 @@ class PaymentDialog extends StatelessWidget {
 
                 //Vencimento
                 Text(
-                  'Vencimento: ${Formatters.dateToDateTime(order.overdueDateTime)}',
+                  'Vencimento: ${Formatters.formatDatetime(order.overdueDateTime)}',
                   style: const TextStyle(
                     fontSize: 12,
                   ),
