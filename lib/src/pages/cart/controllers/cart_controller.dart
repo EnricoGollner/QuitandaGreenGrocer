@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/utils/toast_util.dart';
 import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/models/item_model.dart';
 import 'package:quitanda_app/src/models/order_model.dart';
 import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
+import 'package:quitanda_app/src/pages/base/common_widgets/payment_dialog.dart';
 import 'package:quitanda_app/src/pages/cart/cart_result/cart_result.dart';
 import 'package:quitanda_app/src/pages/cart/repositories/cart_repository.dart';
 
@@ -12,6 +14,13 @@ class CartController extends GetxController {
   final AuthController _authController = Get.find<AuthController>();
 
   List<CartItemModel> cartItems = [];
+
+  bool isCheckoutLoading = false;
+
+  void setCheckoutLoading(bool value) {
+    isCheckoutLoading = value;
+    update();
+  }
 
   @override
   void onInit() {
@@ -30,18 +39,33 @@ class CartController extends GetxController {
   }
 
   Future checkoutCart() async {
+    setCheckoutLoading(true);
+
     final CartResult<OrderModel> result = await _cartRepository.checkoutCart(
       token: _authController.user.token!,
       total: cartTotalPrice().toString(),
     );
 
-    result.when(success: (order) {
-      cartItems.clear();
-      update();
-      FlutterToastUtil.show(message: 'Pedido realizado com sucesso');
-    }, error: (message) {
-      FlutterToastUtil.show(message: message, isError: true);
-    });
+    setCheckoutLoading(false);
+
+    result.when(
+      success: (order) {
+        cartItems.clear();
+        update();
+
+        showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return PaymentDialog(
+              order: order,
+            );
+          },
+        );
+        FlutterToastUtil.show(message: 'Pedido realizado com sucesso');
+      }, error: (message) {
+        FlutterToastUtil.show(message: message, isError: true);
+      },
+    );
   }
 
   Future<bool> changeItemQuantity({required CartItemModel item, required int quantity}) async {

@@ -17,7 +17,7 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
               .toList() ??
           [],
       status: json['status'] as String,
-      qrCodeImage: json['qrCodeImage'] as String?,
+      qrCodeImage: json['qrCodeImage'] as String,
       copyAndPaste: json['copiaecola'] as String,
       total: (json['total'] as num).toDouble(),
     );

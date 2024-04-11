@@ -18,7 +18,7 @@ class OrderModel {
   List<CartItemModel> items;
   String status;
   
-  String? qrCodeImage;
+  String qrCodeImage;
 
   @JsonKey(name: 'copiaecola')
   String copyAndPaste;
@@ -30,7 +30,7 @@ class OrderModel {
     required this.overdueDateTime,
     required this.items,
     required this.status,
-    this.qrCodeImage,
+    required this.qrCodeImage,
     required this.copyAndPaste,
     required this.total,
   });

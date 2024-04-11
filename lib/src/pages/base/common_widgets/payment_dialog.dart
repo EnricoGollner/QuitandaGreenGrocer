@@ -1,7 +1,9 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
+import 'package:quitanda_app/src/core/utils/qrcode_util.dart';
+import 'package:quitanda_app/src/core/utils/toast_util.dart';
 import 'package:quitanda_app/src/models/order_model.dart';
 
 class PaymentDialog extends StatelessWidget {
@@ -30,13 +32,17 @@ class PaymentDialog extends StatelessWidget {
                     fontSize: 18,
                   ),
                 ),
-
                 //QR CODE
-                QrImageView(
-                  data: 'asd12345667788545422',
-                  version: QrVersions.auto,
-                  size: 200.0,
+                Image.memory(
+                  QRCodeUtil.generateQRCode(order.qrCodeImage),
+                  height: 200,
+                  width: 200,
                 ),
+                // QrImageView(
+                //   data: 'asd12345667788545422',
+                //   version: QrVersions.auto,
+                //   size: 200.0,
+                // ),
 
                 //Vencimento
                 Text(
@@ -59,7 +65,10 @@ class PaymentDialog extends StatelessWidget {
                       color: CustomColors.customSwatchColor,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    FlutterClipboard.copy(order.copyAndPaste);
+                    FlutterToastUtil.show(message: 'Código copiado');
+                  },
                   icon: const Icon(
                     Icons.copy,
                     size: 15,

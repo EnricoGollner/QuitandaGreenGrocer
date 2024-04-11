@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/core/utils/toast_util.dart';
-import 'package:quitanda_app/src/models/order_model.dart';
-import 'package:quitanda_app/src/pages/base/common_widgets/payment_dialog.dart';
 import 'package:quitanda_app/src/pages/cart/components/cart_tile.dart';
 import 'package:quitanda_app/src/pages/cart/controllers/cart_controller.dart';
 
@@ -51,9 +47,7 @@ class _CartTabState extends State<CartTab> {
                         color: CustomColors.customSwatchColor,
                       ),
                       const SizedBox(height: 10),
-                      const Text(
-                        'Não há itens no carrinho'
-                      ),
+                      const Text('Não há itens no carrinho'),
                     ],
                   );
                 }
@@ -107,46 +101,37 @@ class _CartTabState extends State<CartTab> {
                   ),
                   SizedBox(
                     height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.customSwatchColor,
-                      ),
-                      onPressed: () async {
-                        final bool? result = await _showOrderConfirmation();
-
-                        if (result ?? false) {
-                            await _cartController.checkoutCart();
-                            
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return PaymentDialog(
-                                  order: OrderModel(
-                                    id: '',
-                                    createdDateTime: DateTime.now(),
-                                    overdueDateTime: DateTime.now().add(const Duration(hours: 1)),
-                                    items: [],
-                                    status: 'pending_payment',
-                                    copyAndPaste: '',
-                                    total: cartTotalPrice(),
+                    child: GetBuilder<CartController>(
+                      builder: (controller) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: CustomColors.customSwatchColor,
+                          ),
+                          onPressed: controller.isCheckoutLoading
+                              ? null
+                              : () async {
+                                  final bool? result = await _showOrderConfirmation();
+                                  if (result ?? false) {
+                                    await _cartController.checkoutCart();
+                                  } else {
+                                    FlutterToastUtil.show(message: 'Pedido não confirmado');
+                                  }
+                                },
+                          child: controller.isCheckoutLoading
+                              ? const CircularProgressIndicator()
+                              : const Text(
+                                  'Finish Order',
+                                  style: TextStyle(
+                                    fontSize: 18,
                                   ),
-                                );
-                              },
-                            );
-                          } else {
-                            FlutterToastUtil.show(message: 'Pedido não confirmado');
-                          }
+                                ),
+                        );
                       },
-                      child: const Text(
-                        'Finish Order',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
                     ),
                   )
                 ],
-              ))
+              ),
+            )
         ],
       ),
     );
