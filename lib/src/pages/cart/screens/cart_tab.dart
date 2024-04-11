@@ -16,16 +16,6 @@ class CartTab extends StatefulWidget {
 class _CartTabState extends State<CartTab> {
   final CartController _cartController = Get.find<CartController>();
 
-  double cartTotalPrice() {
-    double total = 0;
-
-    // for (var cartItem in app_data.cartItems) {
-    //   total += cartItem.totalPrice();
-    // }
-
-    return total;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +97,7 @@ class _CartTabState extends State<CartTab> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: CustomColors.customSwatchColor,
                           ),
-                          onPressed: controller.isCheckoutLoading
+                          onPressed: (controller.isCheckoutLoading || controller.cartItems.isEmpty)
                               ? null
                               : () async {
                                   final bool? result = await _showOrderConfirmation();

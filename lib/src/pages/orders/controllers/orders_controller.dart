@@ -24,7 +24,7 @@ class OrdersController extends GetxController {
     );
 
     result.when(success: (orders) {
-      orders = orders;
+      orders = orders..sort((a, b) => b.createdDateTime!.compareTo(a.createdDateTime!));
       update();
     }, error: (message) {
       UtilsServices.showFlutterToast(message: message, isError: true);

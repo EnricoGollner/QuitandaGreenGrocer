@@ -62,9 +62,9 @@ class OrderTile extends StatelessWidget {
                             child: SizedBox(
                               height: 150,
                               child: ListView.builder(
-                                itemCount: order.items.length,
+                                itemCount: orderController.order.items.length,
                                 itemBuilder: (context, index) {
-                                  final CartItemModel orderItem = order.items[index];
+                                  final CartItemModel orderItem = orderController.order.items[index];
                                   return _OrderItemWidget(orderItem: orderItem);
                                 },
                               ),
