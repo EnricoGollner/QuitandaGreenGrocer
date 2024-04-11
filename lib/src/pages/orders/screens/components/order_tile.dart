@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:quitanda_app/src/core/utils/formatters.dart';
 import 'package:quitanda_app/src/models/cart_item_model.dart';
 import 'package:quitanda_app/src/models/order_model.dart';
 import 'package:quitanda_app/src/pages/base/common_widgets/payment_dialog.dart';
+import 'package:quitanda_app/src/pages/orders/controllers/order_controller.dart';
 import 'package:quitanda_app/src/pages/orders/screens/components/order_status_widget.dart';
 
 class OrderTile extends StatelessWidget {
@@ -18,83 +20,101 @@ class OrderTile extends StatelessWidget {
       ),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-        child: ExpansionTile(
-          initiallyExpanded: order.status == 'pending_payment',
-          title: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Pedido ${order.id}'),
-              Text(
-                Formatters.dateToDateTime(order.createdDateTime!),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-          childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-          expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            IntrinsicHeight(
-              child: Row(
+        child: GetBuilder<OrderController>(
+          init: OrderController(order: order),
+          global: false,
+          builder: (orderController) {
+            return ExpansionTile(
+              onExpansionChanged: (value) async {
+                if (value && order.items.isEmpty) {
+                  await orderController.getOrderItems(orderId: order.id);
+                }
+              },
+              title: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    flex: 3,
-                    child: SizedBox(
-                      height: 150,
-                      child: ListView.builder(
-                        itemCount: order.items.length,
-                        itemBuilder: (context, index) {
-                          final CartItemModel orderItem = order.items[index];
-                          return _OrderItemWidget(orderItem: orderItem);
-                        },
+                  Text('Pedido ${order.id}'),
+                  Text(
+                    Formatters.dateToDateTime(order.createdDateTime!),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+              childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+              children: orderController.isLoading
+                ? [
+                  Container(
+                    height: 100,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  )
+                ]
+                : [
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: SizedBox(
+                              height: 150,
+                              child: ListView.builder(
+                                itemCount: order.items.length,
+                                itemBuilder: (context, index) {
+                                  final CartItemModel orderItem = order.items[index];
+                                  return _OrderItemWidget(orderItem: orderItem);
+                                },
+                              ),
+                            ),
+                          ),
+                          VerticalDivider(
+                            color: Colors.grey.shade300,
+                            thickness: 2,
+                            width: 8,
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: OrderStatusWidget(
+                              status: order.status,
+                              isOverdue: order.overdueDateTime.isBefore(DateTime.now()),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  VerticalDivider(
-                    color: Colors.grey.shade300,
-                    thickness: 2,
-                    width: 8,
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: OrderStatusWidget(
-                      status: order.status,
-                      isOverdue: order.overdueDateTime.isBefore(DateTime.now()),
+                    Text.rich(
+                      style: const TextStyle(
+                        fontSize: 20,
+                      ),
+                      TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Total ',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(text: Formatters.priceToCurrency(order.total))
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Text.rich(
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-              TextSpan(
-                children: [
-                  const TextSpan(
-                    text: 'Total ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(text: Formatters.priceToCurrency(order.total))
-                ],
-              ),
-            ),
-            Visibility(
-              visible: order.status == 'pending_payment',
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  showDialog(context: context, builder: (context){
-                    return PaymentDialog(order: order);
-                  });
-                },
-                icon: const Icon(Icons.pix),
-                label: const Text('Pix QR Code'),
-              ),
-            ),
-          ],
-        ),
+                    Visibility(
+                      visible: order.status == 'pending_payment' && !order.isOverdue,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          showDialog(context: context, builder: (context){
+                            return PaymentDialog(order: order);
+                          });
+                        },
+                        icon: const Icon(Icons.pix),
+                        label: const Text('Pix QR Code'),
+                      ),
+                    ),
+                  ],
+            );
+          }
+        )
       ),
     );
   }
