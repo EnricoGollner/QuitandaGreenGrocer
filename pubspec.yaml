@@ -1,12 +1,10 @@
 name: quitanda_app
 description: "Project to learn GetX"
 
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.7.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -33,7 +31,7 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^3.0.0
 
-  flutter_launcher_icons: ^0.13.1  # Plugin utilizado somente no desenvolvimento
+  flutter_launcher_icons: ^0.13.1
   json_serializable: ^6.7.1
   build_runner: ^2.4.8
 

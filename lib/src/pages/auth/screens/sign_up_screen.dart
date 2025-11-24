@@ -7,9 +7,14 @@ import 'package:quitanda_app/src/pages/auth/components/custom_text_field.dart';
 import 'package:quitanda_app/src/core/theme/colors.dart';
 import 'package:quitanda_app/src/pages/auth/controllers/auth_controller.dart';
 
-class SignUpScreen extends StatelessWidget {
-  SignUpScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> with SingleTickerProviderStateMixin {
   final TextInputFormatter cpfFormatter = MaskTextInputFormatter(
     mask: '###.###.###-##',
     filter: {'#': RegExp(r'[0-9]')},
@@ -23,10 +28,25 @@ class SignUpScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthController _authController = Get.find<AuthController>();
 
+  late final AnimationController _animationController;
+  late final Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(duration: const Duration(milliseconds: 300), vsync: this);
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 1),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) => _animationController.forward());
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
       body: SingleChildScrollView(
@@ -61,86 +81,91 @@ class SignUpScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32, vertical: 40),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(40)),
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          CustomTextField(
-                            icon: Icons.email,
-                            keyboardType: TextInputType.emailAddress,
-                            labelText: 'E-mail',
-                            validator: Validators.isEmail,
-                            onSaved: (value) =>
-                                _authController.user.email = value!,
-                          ),
-                          CustomTextField(
-                            icon: Icons.lock,
-                            labelText: 'Password',
-                            isSecret: true,
-                            validator: Validators.isRequired,
-                            onSaved: (value) =>
-                                _authController.user.password = value!,
-                          ),
-                          CustomTextField(
-                            icon: Icons.person,
-                            labelText: 'Name',
-                            validator: Validators.isFullname,
-                            onSaved: (value) =>
-                                _authController.user.name = value!,
-                          ),
-                          CustomTextField(
-                            icon: Icons.phone,
-                            labelText: 'Phone',
-                            keyboardType: TextInputType.phone,
-                            inputFormatters: [phoneFormatter],
-                            validator: Validators.isPhone,
-                            onSaved: (value) =>
-                                _authController.user.phone = value!,
-                          ),
-                          CustomTextField(
-                            icon: Icons.file_copy,
-                            labelText: 'CPF',
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [cpfFormatter],
-                            validator: Validators.isCPF,
-                            onSaved: (value) =>
-                                _authController.user.cpf = value!,
-                          ),
-                          SizedBox(
-                            height: 50,
-                            child: Obx(
-                              () => ElevatedButton(
-                                onPressed: _authController.isLoading.value ? null : () async {
-                                  FocusScope.of(context).unfocus();
-
-                                  if (_formKey.currentState!.validate()) {
-                                    _formKey.currentState!.save(); // call all the TextField's "onSaved" methods
-                                    await _authController.signUp();
-                                  }
-                                },
-                                child: _authController.isLoading.value ? const CircularProgressIndicator() : const Text(
-                                  'Cadastrar Usuário',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
+                  SlideTransition(
+                    position: _slideAnimation,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 40,
+                      ),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(40),
+                        ),
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CustomTextField(
+                              icon: Icons.email,
+                              keyboardType: TextInputType.emailAddress,
+                              labelText: 'E-mail',
+                              validator: Validators.isEmail,
+                              onSaved: (value) =>
+                                  _authController.user.email = value!,
+                            ),
+                            CustomTextField(
+                              icon: Icons.lock,
+                              labelText: 'Password',
+                              isSecret: true,
+                              validator: Validators.isRequired,
+                              onSaved: (value) =>
+                                  _authController.user.password = value!,
+                            ),
+                            CustomTextField(
+                              icon: Icons.person,
+                              labelText: 'Name',
+                              validator: Validators.isFullname,
+                              onSaved: (value) =>
+                                  _authController.user.name = value!,
+                            ),
+                            CustomTextField(
+                              icon: Icons.phone,
+                              labelText: 'Phone',
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [phoneFormatter],
+                              validator: Validators.isPhone,
+                              onSaved: (value) =>
+                                  _authController.user.phone = value!,
+                            ),
+                            CustomTextField(
+                              icon: Icons.file_copy,
+                              labelText: 'CPF',
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [cpfFormatter],
+                              validator: Validators.isCPF,
+                              onSaved: (value) =>
+                                  _authController.user.cpf = value!,
+                            ),
+                            SizedBox(
+                              height: 50,
+                              child: Obx(
+                                () => ElevatedButton(
+                                  onPressed: _authController.isLoading.value ? null : () async {
+                                    FocusScope.of(context).unfocus();
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save(); // call all the TextField's "onSaved" methods
+                                      await _authController.signUp();
+                                    }
+                                  },
+                                  child: _authController.isLoading.value ? const CircularProgressIndicator() : const Text(
+                                    'Cadastrar Usuário',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ],

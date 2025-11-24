@@ -25,14 +25,12 @@ class ForgotPasswordDialog extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Conteúdo
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Titulo
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(

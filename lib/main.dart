@@ -23,7 +23,7 @@ class QuitandaApp extends StatelessWidget {
       title: 'GreenGrocer',
       theme: Styles.setMaterial3Theme(),
       initialRoute: PagesRoutes.splashScreen,
-      getPages: AppPages.pages, // Onde definimos as GetPages com Name e widget
+      getPages: AppPages.pages,
     );
   }
 }

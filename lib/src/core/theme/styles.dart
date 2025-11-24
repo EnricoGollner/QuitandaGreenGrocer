@@ -20,7 +20,7 @@ class Styles {
           foregroundColor: Colors.white,
         ),
       ),
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         backgroundColor: Colors.white,
       ),
     );
